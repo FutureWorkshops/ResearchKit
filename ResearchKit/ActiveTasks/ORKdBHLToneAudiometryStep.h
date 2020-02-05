@@ -66,6 +66,11 @@ ORK_CLASS_AVAILABLE
 
 @property (nonatomic, copy, nullable) NSArray *frequencyList;
 
+/// If you set this property, the sensitivity per frequency will be the one that you specify here
+/// Should follow this structure: `{"500":"86.82", "1000":"86.37", "2000":"91.62", "4000":"90.19"}`
+/// The example dict follows the values found in `frequency_dBSPL_EARPODS.plist`
+@property (nonatomic, nullable, copy) NSDictionary *sensitivityPerFrequency;
+
 @end
 
 NS_ASSUME_NONNULL_END

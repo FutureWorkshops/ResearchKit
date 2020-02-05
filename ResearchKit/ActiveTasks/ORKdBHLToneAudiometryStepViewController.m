@@ -168,7 +168,7 @@
     [self.dBHLToneAudiometryContentView.tapButton addTarget:self action:@selector(tapButtonPressed) forControlEvents:UIControlEventTouchDown];
 
     _audioChannel = [self dBHLToneAudiometryStep].earPreference;
-    _audioGenerator = [[ORKdBHLToneAudiometryAudioGenerator alloc] initForHeadphones:[self dBHLToneAudiometryStep].headphoneType];
+    _audioGenerator = [[ORKdBHLToneAudiometryAudioGenerator alloc] initForHeadphones:[self dBHLToneAudiometryStep].headphoneType overridenSensitivityPerFrequency: dBHLTAStep.sensitivityPerFrequency];
     _audioGenerator.delegate = self;
     _hapticFeedback = [[UIImpactFeedbackGenerator alloc] initWithStyle: UIImpactFeedbackStyleHeavy];
 }

@@ -65,7 +65,7 @@ ORK_CLASS_AVAILABLE
 
 @property (nonatomic, weak) id<ORKdBHLToneAudiometryAudioGeneratorDelegate> delegate;
 
-- (instancetype) initForHeadphones: (NSString *)headphones;
+- (instancetype) initForHeadphones: (NSString *)headphones overridenSensitivityPerFrequency: (NSDictionary * _Nullable)overridenSensitivityPerFrequency;
 
 - (void)playSoundAtFrequency:(double)playFrequency
                    onChannel:(ORKAudioChannel)playChannel

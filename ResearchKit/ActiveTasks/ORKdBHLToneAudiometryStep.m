@@ -77,8 +77,9 @@
     self.shouldShowDefaultTimer = NO;
     
     // Tympa customizations
-    self.frequencyList = @[@500.0, @1000.0, @2000.0, @4000.0];
     self.headphoneType = ORKHeadphoneTypeIdentifierEarPods;
+    self.frequencyList = @[@500.0, @1000.0, @2000.0, @4000.0];
+    self.sensitivityPerFrequency = nil;
 }
 
 - (void)validateParameters {
@@ -118,6 +119,7 @@
     step.headphoneType = self.headphoneType;
     step.earPreference = self.earPreference;
     step.frequencyList = self.frequencyList;
+    step.sensitivityPerFrequency = self.sensitivityPerFrequency;
     return step;
 }
 
@@ -138,6 +140,7 @@
         ORK_DECODE_INTEGER(aDecoder, earPreference);
         ORK_DECODE_OBJ(aDecoder, headphoneType);
         ORK_DECODE_OBJ_ARRAY(aDecoder, frequencyList, NSNumber);
+        ORK_DECODE_OBJ_MUTABLE_DICTIONARY(aDecoder, sensitivityPerFrequency, NSString, NSString);
     }
     return self;
 }
@@ -158,6 +161,7 @@
     ORK_ENCODE_INTEGER(aCoder, earPreference);
     ORK_ENCODE_OBJ(aCoder, headphoneType);
     ORK_ENCODE_OBJ(aCoder, frequencyList);
+    ORK_ENCODE_OBJ(aCoder, sensitivityPerFrequency);
 }
 
 + (BOOL)supportsSecureCoding {
@@ -182,7 +186,8 @@
             && (self.dBHLMinimumThreshold == castObject.dBHLMinimumThreshold)
             && (self.earPreference == castObject.earPreference)
             && ORKEqualObjects(self.headphoneType, castObject.headphoneType)
-            && ORKEqualObjects(self.frequencyList, castObject.frequencyList));
+            && ORKEqualObjects(self.frequencyList, castObject.frequencyList))
+            && ORKEqualObjects(self.sensitivityPerFrequency, castObject.sensitivityPerFrequency);
 }
 
 @end
