@@ -73,10 +73,11 @@
     self.dBHLStepUpSizeThirdMiss = ORKdBHLToneAudiometryTaskdBHLStepUpSizeThirdMiss;
     self.dBHLStepDownSize = ORKdBHLToneAudiometryTaskdBHLStepDownSize;
     self.dBHLMinimumThreshold = ORKdBHLToneAudiometryTaskdBHLMinimumThreshold;
-    self.frequencyList = @[@1000.0, @2000.0, @3000.0, @4000.0, @8000.0, @1000.0, @500.0, @250.0];
     self.stepDuration = CGFLOAT_MAX;
     self.shouldShowDefaultTimer = NO;
     
+    // Tympa customizations
+    self.frequencyList = @[@500.0, @1000.0, @2000.0, @4000.0];
     self.headphoneType = ORKHeadphoneTypeIdentifierEarPods;
 }
 
