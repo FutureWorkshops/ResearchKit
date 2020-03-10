@@ -107,7 +107,8 @@ static const CGFloat CheckmarkViewBorderWidth = 2.0;
          self.image = _checkedImage;
         //        FIXME: Need to be replaced.
         if (@available(iOS 13.0, *)) {
-            self.tintColor = UIColor.systemBlueColor;
+            self.tintColor = [UIColor colorWithRed:73.0/255.0 green:173.0/255.0 blue:171.0/255.0 alpha:1.0];
+//            self.tintColor = UIColor.systemBlueColor;
         } else {
             self.backgroundColor = [self tintColor];
             self.tintColor = UIColor.whiteColor;
