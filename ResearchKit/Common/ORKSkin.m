@@ -521,7 +521,7 @@ CGFloat ORKStepContainerTopPaddingForWindow(UIWindow *window) {
 CGFloat ORKStepContainerTopContentHeightForWindow(UIWindow *window) {
     window = ORKDefaultWindowIfWindowIsNil(window);
     const CGSize windowSize = window.bounds.size;
-    return ceil((ORKStepContainerTopContentHeightPercentage / 100.0) * windowSize.height);
+    return ceil((ORKStepContainerTopContentHeightPercentage / 130.0) * windowSize.height);
 }
 
 CGFloat ORKStepContainerFirstItemTopPaddingForWindow(UIWindow *window) {
