@@ -50,6 +50,7 @@
     self.stepDetailText = step.detailText;
     self.stepTopContentImage = step.image;
     self.stepTopContentImageContentMode = step.imageContentMode;
+    self.stepHeaderTextAlignment = step.headerTextAlignment;
 }
 
 - (void)updateTitle:(NSString *)title text:(NSString *)text {
