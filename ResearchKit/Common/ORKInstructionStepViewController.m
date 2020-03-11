@@ -136,8 +136,8 @@
         [self useAppropriateButtonTitleAsLastBeginningInstructionStep];
     }
     
-    [super viewWillAppear:animated];
     [self.taskViewController.navigationBar setBarTintColor:self.view.backgroundColor];
+    [super viewWillAppear:animated];
 }
 
 - (void)viewDidLoad {
