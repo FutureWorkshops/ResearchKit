@@ -145,6 +145,16 @@
     [super viewDidLoad];
 
     [self configureStep];
+    
+    // Added a "pulse" animation to show that the test is ongoing
+    CABasicAnimation *pulseAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    pulseAnimation.duration = 1.0;
+    pulseAnimation.repeatCount = HUGE_VALF;
+    pulseAnimation.autoreverses = YES;
+    pulseAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+    pulseAnimation.toValue = [NSNumber numberWithFloat:1.15];
+    pulseAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    [self.dBHLToneAudiometryContentView.tapButton.layer addAnimation:pulseAnimation forKey:@"animateScale"];
 }
 
 - (void)configureStep {
