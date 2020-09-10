@@ -32,7 +32,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ORKHealthKitPermissionType;
 @class ORKRequestPermissionView;
 
 ORK_CLASS_AVAILABLE

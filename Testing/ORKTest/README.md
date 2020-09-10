@@ -39,9 +39,6 @@ ResearchKit framework results, to and from JSON.
 
 You can run `ORKTest` on a device or in the iOS Simulator.
 
-To run on device, you will need to use a provisioning profile that
-includes the appropriate HealthKit entitlement.
-
 When launching `ORKTest`, you will see an array of buttons. Each
 button corresponds to a task that can be used for testing. Information
 on the results and progress of the task are logged to the console.

@@ -1080,61 +1080,7 @@
                                                                                                        minimumValueDescription:@"Low value"]];
         [steps addObject:step];
     }
-    
-    {
-        /*
-         A HealthKit answer format question for gender.
-         The default value is read from HealthKit when the step is being presented,
-         but the user's answer is not written back to HealthKit.
-         */
-        ORKQuestionStep *step = [ORKQuestionStep questionStepWithIdentifier:@"step19"
-                                                                      title:@"Selection Survey"
-                                                                   question:@"What is your gender"
-                                                                     answer:[ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:[HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierBiologicalSex]]];
-        [steps addObject:step];
-    }
-    
-    {
-        /*
-         A HealthKit answer format question for blood type.
-         The default value is read from HealthKit when the step is being presented,
-         but the user's answer is not written back to HealthKit.
-         */
-        ORKQuestionStep *step = [ORKQuestionStep questionStepWithIdentifier:@"step20"
-                                                                      title:@"Selection Survey"
-                                                                   question:@"What is your blood type?"
-                                                                     answer:[ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:[HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierBloodType]]];
-        [steps addObject:step];
-    }
-    
-    {
-        /*
-         A HealthKit answer format question for date of birth.
-         The default value is read from HealthKit when the step is being presented,
-         but the user's answer is not written back to HealthKit.
-         */
-        ORKQuestionStep *step = [ORKQuestionStep questionStepWithIdentifier:@"step21"
-                                                                      title:@"Selection Survey"
-                                                                   question:@"What is your date of birth?"
-                                                                     answer:[ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:[HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierDateOfBirth]]];
-        [steps addObject:step];
-    }
-    
-    {
-        /*
-         A HealthKit answer format question for weight.
-         The default value is read from HealthKit when the step is being presented,
-         but the user's answer is not written back to HealthKit.
-         */
-        ORKQuestionStep *step = [ORKQuestionStep questionStepWithIdentifier:@"step22"
-                                                                      title:@"Selection Survey"
-                                                                   question:@"How much do you weigh?"
-                                                                     answer:[ORKHealthKitQuantityTypeAnswerFormat answerFormatWithQuantityType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass]
-                                                                                                                                          unit:nil
-                                                                                                                                         style:ORKNumericAnswerStyleDecimal]];
-        [steps addObject:step];
-    }
-    
+
     {
         /*
          A multiple choice question where the items are mis-formatted.

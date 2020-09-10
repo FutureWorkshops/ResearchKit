@@ -135,39 +135,6 @@
         [steps addObject:step];
         
         {
-            ORKFormItem *item = [[ORKFormItem alloc] initWithIdentifier:@"weight1"
-                                                                   text:@"Weight"
-                                                           answerFormat:
-                                 [ORKHealthKitQuantityTypeAnswerFormat answerFormatWithQuantityType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass]
-                                                                                               unit:[HKUnit unitFromMassFormatterUnit:NSMassFormatterUnitPound]
-                                                                                              style:ORKNumericAnswerStyleDecimal]];
-            [items addObject:item];
-        }
-        
-        {
-            ORKFormItem *item = [[ORKFormItem alloc] initWithIdentifier:@"weight2"
-                                                                   text:@"Weight"
-                                                           answerFormat:
-                                 [ORKHealthKitQuantityTypeAnswerFormat answerFormatWithQuantityType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass]
-                                                                                               unit:[HKUnit unitFromMassFormatterUnit:NSMassFormatterUnitPound]
-                                                                                              style:ORKNumericAnswerStyleDecimal]];
-            item.placeholder = @"Add weight";
-            [items addObject:item];
-        }
-        
-        {
-            ORKFormItem *item = [[ORKFormItem alloc] initWithIdentifier:@"weight3"
-                                                                   text:@"Weight"
-                                                           answerFormat:
-                                 [ORKHealthKitQuantityTypeAnswerFormat answerFormatWithQuantityType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass]
-                                                                                               unit:[HKUnit unitFromMassFormatterUnit:NSMassFormatterUnitPound]
-                                                                                              style:ORKNumericAnswerStyleDecimal]];
-            item.placeholder = @"Input your body weight here. Really long text.";
-            [items addObject:item];
-        }
-        
-        
-        {
             ORKFormItem *item = [[ORKFormItem alloc] initWithIdentifier:@"weight4"
                                                                    text:@"Weight"
                                                            answerFormat:[ORKNumericAnswerFormat decimalAnswerFormatWithUnit:nil]];
@@ -185,43 +152,6 @@
          */
         ORKFormStep *step = [[ORKFormStep alloc] initWithIdentifier:@"step3" title:@"Mini Form" text:@"Mini form groups multi-entry in one page"];
         NSMutableArray *items = [NSMutableArray new];
-        
-        {
-            
-            ORKFormItem *item = [[ORKFormItem alloc] initWithIdentifier:@"biologicalSex" text:@"Gender" answerFormat:[ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:[HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierBiologicalSex]]];
-            [items addObject:item];
-        }
-        
-        {
-            ORKFormItem *item = [[ORKFormItem alloc] initWithSectionTitle:@"Basic Information"];
-            [items addObject:item];
-        }
-        
-        {
-            
-            ORKFormItem *item = [[ORKFormItem alloc] initWithIdentifier:@"bloodType" text:@"Blood Type" answerFormat:[ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:[HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierBloodType]]];
-            item.placeholder = @"Choose a type";
-            [items addObject:item];
-        }
-        
-        {
-            
-            ORKFormItem *item = [[ORKFormItem alloc] initWithIdentifier:@"dateOfBirth" text:@"Date of Birth" answerFormat:[ORKHealthKitCharacteristicTypeAnswerFormat answerFormatWithCharacteristicType:[HKCharacteristicType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierDateOfBirth]]];
-            item.placeholder = @"DOB";
-            [items addObject:item];
-        }
-        
-        {
-            
-            ORKFormItem *item = [[ORKFormItem alloc] initWithIdentifier:@"weight"
-                                                                   text:@"Weight"
-                                                           answerFormat:
-                                 [ORKHealthKitQuantityTypeAnswerFormat answerFormatWithQuantityType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass]
-                                                                                               unit:nil
-                                                                                              style:ORKNumericAnswerStyleDecimal]];
-            item.placeholder = @"Add weight";
-            [items addObject:item];
-        }
         
         {
             ORKFormItem *item = [[ORKFormItem alloc] initWithIdentifier:@"headacheQuestion" text:@"Do you have a headache?" answerFormat:[ORKBooleanAnswerFormat new]];

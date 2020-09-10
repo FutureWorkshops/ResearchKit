@@ -37,8 +37,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class ORKCollector;
-@class ORKHealthCollector;
-@class ORKHealthCorrelationCollector;
 @class ORKMotionActivityCollector;
 @class ORKDataCollectionManager;
 
@@ -80,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- The data collection manager is used to collect HealthKit data and CoreMotion data.
+ The data collection manager is used to collect CoreMotion data.
  
  It uses collectors to track data types to be collected.
  Anchors are used to track progress of each types of data to avoid duplications.

@@ -35,7 +35,7 @@
 
 ORKRequestPermissionsNotification const ORKRequestPermissionsNotificationCardViewStatusChanged = @"ORKRequestPermissionsNotificationCardViewStatusChanged";
 
-static const CGFloat RequestHealthDataViewTopBottomPadding = 15.0;
+static const CGFloat RequestDataViewTopBottomPadding = 15.0;
 static const CGFloat StandardPadding = 8.0;
 static const CGFloat IconImageViewWidthHeight = 48.0;
 static const CGFloat IconImageViewBottomPadding = 10.0;
@@ -190,7 +190,7 @@ static const CGFloat RequestDataButtonWidth = 125.0;
     
     _constraints = [NSMutableArray array];
         
-    [_constraints addObject:[_iconImageView.topAnchor constraintEqualToAnchor:self.topAnchor constant:RequestHealthDataViewTopBottomPadding]];
+    [_constraints addObject:[_iconImageView.topAnchor constraintEqualToAnchor:self.topAnchor constant:RequestDataViewTopBottomPadding]];
     [_constraints addObject:[_iconImageView.leftAnchor constraintEqualToAnchor:self.leftAnchor constant:StandardPadding]];
     [_constraints addObject:[_iconImageView.widthAnchor constraintEqualToConstant:IconImageViewWidthHeight]];
     [_constraints addObject:[_iconImageView.heightAnchor constraintEqualToConstant:IconImageViewWidthHeight]];
@@ -207,11 +207,11 @@ static const CGFloat RequestDataButtonWidth = 125.0;
         [_constraints addObject:[_requestPermissionButton.topAnchor constraintEqualToAnchor:_detailTextLabel.bottomAnchor constant:DetailTextLabelBottomPadding]];
         [_constraints addObject:[_requestPermissionButton.leftAnchor constraintEqualToAnchor:_titleLabel.leftAnchor]];
         [_constraints addObject:[_requestPermissionButton.widthAnchor constraintEqualToConstant:RequestDataButtonWidth]];
-        [_constraints addObject:[_requestPermissionButton.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-RequestHealthDataViewTopBottomPadding]];
+        [_constraints addObject:[_requestPermissionButton.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-RequestDataViewTopBottomPadding]];
     } else {
         [_constraints addObject:[_buttonStateMessageLabel.topAnchor constraintEqualToAnchor:_detailTextLabel.bottomAnchor constant:DetailTextLabelBottomPadding]];
         [_constraints addObject:[_buttonStateMessageLabel.leftAnchor constraintEqualToAnchor:_titleLabel.leftAnchor]];
-        [_constraints addObject:[_buttonStateMessageLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-RequestHealthDataViewTopBottomPadding]];
+        [_constraints addObject:[_buttonStateMessageLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-RequestDataViewTopBottomPadding]];
         
         [_constraints addObject:[_buttonStateImageView.leftAnchor constraintEqualToAnchor:_buttonStateMessageLabel.rightAnchor constant: StandardPadding]];
         [_constraints addObject:[_buttonStateImageView.centerYAnchor constraintEqualToAnchor:_buttonStateMessageLabel.centerYAnchor]];

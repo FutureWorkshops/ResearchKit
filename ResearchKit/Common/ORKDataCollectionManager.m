@@ -33,7 +33,6 @@
 #import "ORKCollector_Internal.h"
 #import "ORKOperation.h"
 #import "ORKHelpers_Internal.h"
-#import <HealthKit/HealthKit.h>
 
 
 static  NSString *const ORKDataCollectionPersistenceFileName = @".dataCollection.ork.data";
@@ -43,9 +42,7 @@ static  NSString *const ORKDataCollectionPersistenceFileName = @".dataCollection
     NSOperationQueue *_operationQueue;
     NSString * _Nonnull _managedDirectory;
     NSArray<ORKCollector *> *_collectors;
-    HKHealthStore *_healthStore;
     CMMotionActivityManager *_activityManager;
-    NSMutableArray<HKObserverQueryCompletionHandler> *_completionHandlers;
 }
 
 - (instancetype)initWithPersistenceDirectoryURL:(NSURL *)directoryURL {
@@ -115,13 +112,6 @@ static inline void dispatch_sync_if_not_on_queue(dispatch_queue_t queue, dispatc
             [self persistCollectors];
         }
     });
-}
-
-- (HKHealthStore *)healthStore {
-    if (!_healthStore && [HKHealthStore isHealthDataAvailable]){
-        _healthStore = [[HKHealthStore alloc] init];
-    }
-    return _healthStore;
 }
 
 - (CMMotionActivityManager *)activityManager {
@@ -262,11 +252,6 @@ static inline void dispatch_sync_if_not_on_queue(dispatch_queue_t queue, dispatc
                 if (_delegate && [_delegate respondsToSelector:@selector(dataCollectionManagerDidCompleteCollection:)]) {
                     [_delegate dataCollectionManagerDidCompleteCollection:self];
                 }
-                
-                for (HKObserverQueryCompletionHandler handler in _completionHandlers) {
-                    handler();
-                }
-                [_completionHandlers removeAllObjects];
                 
                 return NO;
             }];

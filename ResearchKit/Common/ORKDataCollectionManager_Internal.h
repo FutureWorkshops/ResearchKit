@@ -35,8 +35,6 @@
 
 @interface ORKDataCollectionManager ()
 
-@property (nonatomic, strong, readonly) HKHealthStore *healthStore;
-
 @property (nonatomic, strong, readonly) CMMotionActivityManager *activityManager;
 
 - (void)onWorkQueueSync:(BOOL (^)(ORKDataCollectionManager *manager))block;

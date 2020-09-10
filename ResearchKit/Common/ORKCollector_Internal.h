@@ -44,17 +44,6 @@
 @end
 
 
-@protocol ORKHealthCollectable <NSObject>
-
-- (HKSampleType *)sampleType;
-- (NSArray<HKSampleType *> *)collectableSampleTypes;
-- (NSDate *)startDate;
-- (HKQueryAnchor *)lastAnchor;
-- (void)setLastAnchor:(HKQueryAnchor *)lastAnchor;
-
-@end
-
-
 @interface ORKMotionActivityCollector()
 
 - (instancetype)initWithStartDate:(NSDate *)startDate;
