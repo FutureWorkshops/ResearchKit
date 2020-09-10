@@ -40,6 +40,10 @@ static const CGFloat ORKBorderedButtonCornerRadii = 14.0;
     BOOL _useBoldFont;
 }
 
++ (void)initialize {
+    [[ORKBorderedButton appearance] setTitleColor:[UIColor whiteColor]];
+}
+
 - (void)init_ORKTextButton {
     [super init_ORKTextButton];
     [self setLayerAndFadeDelay];
@@ -57,10 +61,10 @@ static const CGFloat ORKBorderedButtonCornerRadii = 14.0;
     
     if (!_appearsAsTextButton) {
         [self setLayerAndFadeDelay];
-        [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self setTitleColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f] forState:UIControlStateHighlighted];
-        [self setTitleColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f] forState:UIControlStateSelected];
-        [self setTitleColor:[[UIColor whiteColor] colorWithAlphaComponent:0.3f] forState:UIControlStateDisabled];
+        [self setTitleColor:_titleColor forState:UIControlStateNormal];
+        [self setTitleColor:[_titleColor colorWithAlphaComponent:0.7f] forState:UIControlStateHighlighted];
+        [self setTitleColor:[_titleColor colorWithAlphaComponent:0.7f] forState:UIControlStateSelected];
+        [self setTitleColor:[_titleColor colorWithAlphaComponent:0.3f] forState:UIControlStateDisabled];
     }
     else {
         [self setTitleColor:_normalTintColor forState:UIControlStateNormal];
@@ -94,6 +98,11 @@ static const CGFloat ORKBorderedButtonCornerRadii = 14.0;
 - (void)setDisableTintColor:(UIColor *)disableTintColor {
     _disableTintColor = disableTintColor;
     [self updateBackgroundColor];
+}
+
+- (void)setTitleColor:(UIColor *)titleColor {
+    _titleColor = titleColor;
+    [self tintColorDidChange];
 }
 
 - (void)setHighlighted:(BOOL)highlighted {

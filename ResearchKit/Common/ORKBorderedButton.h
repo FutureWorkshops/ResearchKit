@@ -54,6 +54,11 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic) UIColor *disableTintColor;
 
 /**
+The text color of the bordered button
+*/
+@property (nonatomic) UIColor *titleColor UI_APPEARANCE_SELECTOR;
+
+/**
  The delay in fading animation
  */
 @property (nonatomic, assign) NSTimeInterval fadeDelay;
