@@ -335,21 +335,6 @@
     return NO;
 }
 
-- (NSSet *)requestedHealthKitTypesForReading {
-    NSMutableSet *healthTypes = [NSMutableSet set];
-    for (ORKStep *step in self.steps) {
-        NSSet *stepSet = [step requestedHealthKitTypesForReading];
-        if (stepSet) {
-            [healthTypes unionSet:stepSet];
-        }
-    }
-    return healthTypes.count ? healthTypes : nil;
-}
-
-- (NSSet *)requestedHealthKitTypesForWriting {
-    return nil;
-}
-
 - (ORKPermissionMask)requestedPermissions {
     ORKPermissionMask mask = ORKPermissionNone;
     for (ORKStep *step in self.steps) {

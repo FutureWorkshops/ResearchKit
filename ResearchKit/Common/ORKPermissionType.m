@@ -28,16 +28,10 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "ORKHealthKitPermissionType.h"
 #import "ORKHelpers_Internal.h"
 #import "ORKPermissionType.h"
 
 @implementation ORKPermissionType
-
-+ (ORKHealthKitPermissionType *)healthKitPermissionTypeWithSampleTypesToWrite:(NSSet<HKSampleType *> *)sampleTypesToWrite objectTypesToRead:(NSSet<HKObjectType *> *)objectTypesToRead {
-    return [[ORKHealthKitPermissionType alloc] initWithSampleTypesToWrite:sampleTypesToWrite
-                                                        objectTypesToRead:objectTypesToRead];
-}
 
 @end
 

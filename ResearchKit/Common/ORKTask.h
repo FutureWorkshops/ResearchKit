@@ -30,7 +30,6 @@
 
 
 @import Foundation;
-@import HealthKit;
 #import <ResearchKit/ORKTypes.h>
 
 
@@ -230,33 +229,6 @@ ORK_AVAILABLE_DECL
  This method is usually called by a task view controller when its task is set.
  */
 - (void)validateParameters;
-
-/**
- The set of HealthKit types that steps in the task need to be able to
- read. (read-only)
- 
- The value of this property is a set of `HKObjectType` values to request for reading from HealthKit during this task. After the last of the initial instruction steps, the task view controller
-requests access to these HealthKit types.
- 
- To set this property, you can scan the steps in the task
- and collate the HealthKit types that are requested by each active step, question, or
- form step that has a Health answer format, and then include any additional types known
- to be required. (Note that `ORKOrderedTask` does something similar for this property.)
- 
- See also: `requestedHealthKitTypesForWriting`.
- */
-@property (nonatomic, copy, readonly, nullable) NSSet<HKObjectType *> *requestedHealthKitTypesForReading;
-
-/**
- The set of HealthKit types for which the task needs to request write access.
- 
- The requested `HKObjectType` values for writing can be returned by an extended task,
- to request write access to these HealthKit types together with the read access
- requested by the task view controller by calling `requestedHealthKitTypesForReading`.
- 
- See also: `requestedHealthKitTypesForReading`.
- */
-@property (nonatomic, copy, readonly, nullable) NSSet<HKObjectType *> *requestedHealthKitTypesForWriting;
 
 /**
  The set of permissions requested by the task.

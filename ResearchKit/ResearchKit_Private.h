@@ -49,43 +49,14 @@
 #import <ResearchKit/ORKRecorder_Private.h>
 #import <ResearchKit/ORKStepNavigationRule_Private.h>
 
-#import <ResearchKit/ORKAudioLevelNavigationRule.h>
-
 #import <ResearchKit/ORKCollectionResult_Private.h>
 #import <ResearchKit/ORKQuestionResult_Private.h>
 #import <ResearchKit/ORKSignatureResult_Private.h>
 #import <ResearchKit/ORKResult_Private.h>
 #import <ResearchKit/ORKStepContainerView_Private.h>
 
-#import <ResearchKit/ORKAudioStep.h>
-#import <ResearchKit/ORKAmslerGridStep.h>
 #import <ResearchKit/ORKCompletionStep.h>
 #import <ResearchKit/ORKCountdownStep.h>
-#import <ResearchKit/ORKFitnessStep.h>
-#import <ResearchKit/ORKHolePegTestPlaceStep.h>
-#import <ResearchKit/ORKHolePegTestRemoveStep.h>
-#import <ResearchKit/ORKPSATStep.h>
-#import <ResearchKit/ORKRangeOfMotionStep.h>
-#import <ResearchKit/ORKReactionTimeStep.h>
-#import <ResearchKit/ORKShoulderRangeOfMotionStep.h>
-#import <ResearchKit/ORKSpatialSpanMemoryStep.h>
-#import <ResearchKit/ORKStroopStep.h>
-#import <ResearchKit/ORKTappingIntervalStep.h>
-#import <ResearchKit/ORKTimedWalkStep.h>
-#import <ResearchKit/ORKToneAudiometryStep.h>
-#import <ResearchKit/ORKdBHLToneAudiometryStep.h>
-#import <ResearchKit/ORKdBHLToneAudiometryOnboardingStep.h>
-#import <ResearchKit/ORKTowerOfHanoiStep.h>
-#import <ResearchKit/ORKTrailmakingStep.h>
-#import <ResearchKit/ORKWalkingTaskStep.h>
-#import <ResearchKit/ORKSpeechRecognitionStep.h>
-#import <ResearchKit/ORKSpeechInNoiseStep.h>
-#import <ResearchKit/ORKTouchAbilityTapStep.h>
-#import <ResearchKit/ORKTouchAbilityLongPressStep.h>
-#import <ResearchKit/ORKTouchAbilitySwipeStep.h>
-#import <ResearchKit/ORKTouchAbilityScrollStep.h>
-#import <ResearchKit/ORKTouchAbilityPinchStep.h>
-#import <ResearchKit/ORKTouchAbilityRotationStep.h>
 
 #import <ResearchKit/ORKTaskViewController_Private.h>
 #import <ResearchKit/ORKFormStepViewController_Private.h>
@@ -93,36 +64,21 @@
 #import <ResearchKit/ORKPasscodeStepViewController_Internal.h>
 #import <ResearchKit/ORKInstructionStepViewController_Internal.h>
 
-#import <ResearchKit/ORKAudioStepViewController.h>
-#import <ResearchKit/ORKAmslerGridStepViewController.h>
 #import <ResearchKit/ORKConsentReviewStepViewController.h>
 #import <ResearchKit/ORKConsentSharingStepViewController.h>
 #import <ResearchKit/ORKCountdownStepViewController.h>
-#import <ResearchKit/ORKFitnessStepViewController.h>
-#import <ResearchKit/ORKHolePegTestPlaceStepViewController.h>
-#import <ResearchKit/ORKHolePegTestRemoveStepViewController.h>
 #import <ResearchKit/ORKImageCaptureStepViewController.h>
 #import <ResearchKit/ORKPasscodeStepViewController.h>
-#import <ResearchKit/ORKPSATStepViewController.h>
 #import <ResearchKit/ORKReviewStepViewController.h>
 #import <ResearchKit/ORKSignatureStepViewController.h>
-#import <ResearchKit/ORKSpatialSpanMemoryStepViewController.h>
-#import <ResearchKit/ORKStroopStepViewController.h>
-#import <ResearchKit/ORKTappingIntervalStepViewController.h>
-#import <ResearchKit/ORKToneAudiometryStepViewController.h>
-#import <ResearchKit/ORKTimedWalkStepViewController.h>
 #import <ResearchKit/ORKVisualConsentStepViewController.h>
-#import <ResearchKit/ORKWalkingTaskStepViewController.h>
 #import <ResearchKit/ORKVideoInstructionStepViewController.h>
-#import <ResearchKit/ORKSpeechRecognitionStepViewController.h>
 #import <ResearchKit/ORKLearnMoreStepViewController.h>
 
 #import <ResearchKit/ORKAccelerometerRecorder.h>
 #import <ResearchKit/ORKAudioRecorder.h>
 #import <ResearchKit/ORKStreamingAudioRecorder.h>
 #import <ResearchKit/ORKDeviceMotionRecorder.h>
-#import <ResearchKit/ORKHealthQuantityTypeRecorder.h>
-#import <ResearchKit/ORKHealthClinicalTypeRecorder.h>
 #import <ResearchKit/ORKLocationRecorder.h>
 #import <ResearchKit/ORKPedometerRecorder.h>
 #import <ResearchKit/ORKTouchRecorder.h>
@@ -131,7 +87,6 @@
 // For custom steps
 #import <ResearchKit/ORKStepView_Private.h>
 #import <ResearchKit/ORKCustomStepView.h>
-#import <ResearchKit/ORKTappingContentView.h>
 #import <ResearchKit/ORKVerticalContainerView.h>
 #import <ResearchKit/ORKVerticalContainerView_Internal.h>
 #import <ResearchKit/ORKStepContainerView.h>
@@ -148,7 +103,6 @@
 #import <ResearchKit/ORKRingView.h>
 #import <ResearchKit/ORKProgressView.h>
 #import <ResearchKit/ORKFreehandDrawingView.h>
-#import <ResearchKit/ORKAudioGraphView.h>
 #import <ResearchKit/ORKInstructionStepContainerView.h>
 
 #import <ResearchKit/ORKLabel.h>

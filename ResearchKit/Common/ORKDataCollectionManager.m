@@ -163,59 +163,6 @@ static inline void dispatch_sync_if_not_on_queue(dispatch_queue_t queue, dispatc
     _collectors = [collectors copy];
 }
 
-- (ORKHealthCollector *)addHealthCollectorWithSampleType:(HKSampleType*)sampleType unit:(HKUnit *)unit startDate:(NSDate *)startDate error:(NSError**)error {
-    
-    if (!sampleType) {
-        @throw [NSException exceptionWithName:ORKInvalidArgumentException reason:@"sampleType cannot be nil" userInfo:nil];
-    }
-    if (!unit) {
-        @throw [NSException exceptionWithName:ORKInvalidArgumentException reason:@"unit cannot be nil" userInfo:nil];
-    }
-    
-    __block ORKHealthCollector *healthCollector = nil;
-
-    [self onWorkQueueSync:^BOOL(ORKDataCollectionManager *manager){
-        
-        ORKHealthCollector *collector = [[ORKHealthCollector alloc] initWithSampleType:sampleType unit:unit startDate:startDate];
-        [self addCollector:collector];
-        healthCollector = collector;
-    
-        return YES;
-    }];
-    
-    return healthCollector;
-}
-
-- (ORKHealthCorrelationCollector *)addHealthCorrelationCollectorWithCorrelationType:(HKCorrelationType *)correlationType
-                                                                        sampleTypes:(NSArray<HKSampleType *> *)sampleTypes
-                                                                              units:(NSArray<HKUnit *> *)units
-                                                                          startDate:(NSDate *)startDate
-                                                                              error:(NSError * __autoreleasing *)error {
-    if (!correlationType) {
-        @throw [NSException exceptionWithName:ORKInvalidArgumentException reason:@"correlationType cannot be nil" userInfo:nil];
-    }
-    if (![sampleTypes count]) {
-        @throw [NSException exceptionWithName:ORKInvalidArgumentException reason:@"sampleTypes cannot be empty" userInfo:nil];
-    }
-    if ([units count] != [sampleTypes count]) {
-        @throw [NSException exceptionWithName:ORKInvalidArgumentException reason:@"units should be same length as sampleTypes" userInfo:nil];
-    }
-    
-    __block ORKHealthCorrelationCollector *healthCorrelationCollector = nil;
-    [self onWorkQueueSync:^BOOL(ORKDataCollectionManager *manager) {
-        
-        ORKHealthCorrelationCollector *collector = [[ORKHealthCorrelationCollector alloc] initWithCorrelationType:correlationType
-                                                                                                      sampleTypes:sampleTypes
-                                                                                                            units:units
-                                                                                                        startDate:startDate];
-        [self addCollector:collector];
-        healthCorrelationCollector = collector;
-        return YES;
-    }];
-    
-    return healthCorrelationCollector;
-}
-
 - (ORKMotionActivityCollector *)addMotionActivityCollectorWithStartDate:(NSDate *)startDate
                                                                   error:(NSError* __autoreleasing *)error {
    

@@ -29,7 +29,6 @@
  */
 
 @import Foundation;
-@import HealthKit;
 
 #if defined(__cplusplus)
 #  define ORK_EXTERN extern "C" __attribute__((visibility("default")))

@@ -22,7 +22,6 @@
 		86717AFD1AC0C86000AC2A23 /* ORKJSONSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86717AFC1AC0C86000AC2A23 /* ORKJSONSerializationTests.m */; };
 		86717AFE1AC0C8BC00AC2A23 /* ORKESerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 86717AD81AC0C53800AC2A23 /* ORKESerialization.m */; };
 		86717B071AC0CC0400AC2A23 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 86717B091AC0CC0400AC2A23 /* Localizable.strings */; };
-		86D347FA1AC0E1B4006DB02B /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D347F91AC0E1B4006DB02B /* HealthKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B119F055229BD4B6001402F9 /* samples.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B119F054229BD4B6001402F9 /* samples.bundle */; };
 		BCEDC7D71E8A45DE00C5405F /* ChartDataSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEDC7D31E8A45DE00C5405F /* ChartDataSources.swift */; };
 		BCEDC7D81E8A45DE00C5405F /* ChartListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEDC7D41E8A45DE00C5405F /* ChartListViewController.swift */; };
@@ -135,7 +134,6 @@
 		86717B291AC0CC4700AC2A23 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
 		86717B2A1AC0CC4800AC2A23 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
 		86717B2B1AC0CC4A00AC2A23 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
-		86D347F91AC0E1B4006DB02B /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		86D347FB1AC0E1B4006DB02B /* ORKTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ORKTest.entitlements; sourceTree = "<group>"; };
 		B119F054229BD4B6001402F9 /* samples.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = samples.bundle; sourceTree = "<group>"; };
 		B1337BA01B1E709B0098AA54 /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -190,7 +188,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAF31DCF1BC6AEA200041163 /* MapKit.framework in Frameworks */,
-				86D347FA1AC0E1B4006DB02B /* HealthKit.framework in Frameworks */,
 				712977A922B0917A0049213B /* ResearchKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -301,7 +298,6 @@
 			isa = PBXGroup;
 			children = (
 				CAF31DCE1BC6AEA200041163 /* MapKit.framework */,
-				86D347F91AC0E1B4006DB02B /* HealthKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

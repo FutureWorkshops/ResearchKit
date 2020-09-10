@@ -55,24 +55,6 @@
 @end
 
 
-@interface ORKHealthCollector() <ORKHealthCollectable>
-
-- (instancetype)initWithSampleType:(HKSampleType *)objectType unit:(HKUnit *)unit startDate:(NSDate *)startDate;
-
-@property (copy) HKQueryAnchor *lastAnchor;
-
-@end
-
-
-@interface ORKHealthCorrelationCollector() <ORKHealthCollectable>
-
-- (instancetype)initWithCorrelationType:(HKCorrelationType *)objectType sampleTypes:(NSArray *)sampleTypes units:(NSArray *)units startDate:(NSDate *)startDate;
-
-@property (copy) HKQueryAnchor *lastAnchor;
-
-@end
-
-
 @interface ORKMotionActivityCollector()
 
 - (instancetype)initWithStartDate:(NSDate *)startDate;
