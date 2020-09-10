@@ -33,7 +33,6 @@
 #import "ORKCollector_Internal.h"
 #import "ORKOperation.h"
 #import "ORKHelpers_Internal.h"
-#import <HealthKit/HealthKit.h>
 
 
 static  NSString *const ORKDataCollectionPersistenceFileName = @".dataCollection.ork.data";
@@ -43,9 +42,7 @@ static  NSString *const ORKDataCollectionPersistenceFileName = @".dataCollection
     NSOperationQueue *_operationQueue;
     NSString * _Nonnull _managedDirectory;
     NSArray<ORKCollector *> *_collectors;
-    HKHealthStore *_healthStore;
     CMMotionActivityManager *_activityManager;
-    NSMutableArray<HKObserverQueryCompletionHandler> *_completionHandlers;
 }
 
 - (instancetype)initWithPersistenceDirectoryURL:(NSURL *)directoryURL {
@@ -117,13 +114,6 @@ static inline void dispatch_sync_if_not_on_queue(dispatch_queue_t queue, dispatc
     });
 }
 
-- (HKHealthStore *)healthStore {
-    if (!_healthStore && [HKHealthStore isHealthDataAvailable]){
-        _healthStore = [[HKHealthStore alloc] init];
-    }
-    return _healthStore;
-}
-
 - (CMMotionActivityManager *)activityManager {
     if (!_activityManager && [CMMotionActivityManager isActivityAvailable]) {
         _activityManager = [[CMMotionActivityManager alloc] init];
@@ -161,59 +151,6 @@ static inline void dispatch_sync_if_not_on_queue(dispatch_queue_t queue, dispatc
     NSMutableArray *collectors = [self.collectors mutableCopy];
     [collectors addObject:collector];
     _collectors = [collectors copy];
-}
-
-- (ORKHealthCollector *)addHealthCollectorWithSampleType:(HKSampleType*)sampleType unit:(HKUnit *)unit startDate:(NSDate *)startDate error:(NSError**)error {
-    
-    if (!sampleType) {
-        @throw [NSException exceptionWithName:ORKInvalidArgumentException reason:@"sampleType cannot be nil" userInfo:nil];
-    }
-    if (!unit) {
-        @throw [NSException exceptionWithName:ORKInvalidArgumentException reason:@"unit cannot be nil" userInfo:nil];
-    }
-    
-    __block ORKHealthCollector *healthCollector = nil;
-
-    [self onWorkQueueSync:^BOOL(ORKDataCollectionManager *manager){
-        
-        ORKHealthCollector *collector = [[ORKHealthCollector alloc] initWithSampleType:sampleType unit:unit startDate:startDate];
-        [self addCollector:collector];
-        healthCollector = collector;
-    
-        return YES;
-    }];
-    
-    return healthCollector;
-}
-
-- (ORKHealthCorrelationCollector *)addHealthCorrelationCollectorWithCorrelationType:(HKCorrelationType *)correlationType
-                                                                        sampleTypes:(NSArray<HKSampleType *> *)sampleTypes
-                                                                              units:(NSArray<HKUnit *> *)units
-                                                                          startDate:(NSDate *)startDate
-                                                                              error:(NSError * __autoreleasing *)error {
-    if (!correlationType) {
-        @throw [NSException exceptionWithName:ORKInvalidArgumentException reason:@"correlationType cannot be nil" userInfo:nil];
-    }
-    if (![sampleTypes count]) {
-        @throw [NSException exceptionWithName:ORKInvalidArgumentException reason:@"sampleTypes cannot be empty" userInfo:nil];
-    }
-    if ([units count] != [sampleTypes count]) {
-        @throw [NSException exceptionWithName:ORKInvalidArgumentException reason:@"units should be same length as sampleTypes" userInfo:nil];
-    }
-    
-    __block ORKHealthCorrelationCollector *healthCorrelationCollector = nil;
-    [self onWorkQueueSync:^BOOL(ORKDataCollectionManager *manager) {
-        
-        ORKHealthCorrelationCollector *collector = [[ORKHealthCorrelationCollector alloc] initWithCorrelationType:correlationType
-                                                                                                      sampleTypes:sampleTypes
-                                                                                                            units:units
-                                                                                                        startDate:startDate];
-        [self addCollector:collector];
-        healthCorrelationCollector = collector;
-        return YES;
-    }];
-    
-    return healthCorrelationCollector;
 }
 
 - (ORKMotionActivityCollector *)addMotionActivityCollectorWithStartDate:(NSDate *)startDate
@@ -315,11 +252,6 @@ static inline void dispatch_sync_if_not_on_queue(dispatch_queue_t queue, dispatc
                 if (_delegate && [_delegate respondsToSelector:@selector(dataCollectionManagerDidCompleteCollection:)]) {
                     [_delegate dataCollectionManagerDidCompleteCollection:self];
                 }
-                
-                for (HKObserverQueryCompletionHandler handler in _completionHandlers) {
-                    handler();
-                }
-                [_completionHandlers removeAllObjects];
                 
                 return NO;
             }];

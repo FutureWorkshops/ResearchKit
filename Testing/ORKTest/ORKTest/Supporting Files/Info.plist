@@ -26,10 +26,6 @@
 	<string>Test Camera related features.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>This app uses Face ID.</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>Test HK releated features.</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>Test HK releated features.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app records your location during certian tasks.</string>
 	<key>NSMicrophoneUsageDescription</key>

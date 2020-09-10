@@ -37,7 +37,6 @@
 #import "ORKQuestionStepViewController.h"
 #import "ORKReviewStepViewController_Internal.h"
 #import "ORKStepViewController_Internal.h"
-#import "ORKTappingIntervalStepViewController.h"
 #import "ORKTaskViewController_Internal.h"
 #import "ORKVisualConsentStepViewController.h"
 #import "ORKLearnMoreStepViewController.h"
@@ -51,7 +50,6 @@
 #import "ORKResult_Private.h"
 #import "ORKReviewStep_Internal.h"
 #import "ORKStep_Private.h"
-#import "ORKTappingIntervalStep.h"
 #import "ORKVisualConsentStep.h"
 
 #import "ORKHelpers_Internal.h"
@@ -137,11 +135,8 @@ typedef void (^_ORKLocationAuthorizationRequestHandler)(BOOL success);
     NSMutableArray *_managedStepIdentifiers;
     ORKScrollViewObserver *_scrollViewObserver;
     BOOL _hasBeenPresented;
-    BOOL _hasRequestedHealthData;
     BOOL _saveable;
     ORKPermissionMask _grantedPermissions;
-    NSSet<HKObjectType *> *_requestedHealthTypesForRead;
-    NSSet<HKObjectType *> *_requestedHealthTypesForWrite;
     NSURL *_outputDirectory;
     
     NSDate *_presentedDate;
@@ -312,7 +307,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
         }
     }
     
-    _hasRequestedHealthData = NO;
     _task = task;
 }
 
@@ -322,30 +316,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
 
 - (UIBarButtonItem *)defaultLearnMoreButtonItem {
     return [[UIBarButtonItem alloc] initWithTitle:ORKLocalizedString(@"BUTTON_LEARN_MORE", nil) style:UIBarButtonItemStylePlain target:self action:@selector(learnMoreAction:)];
-}
-
-- (void)requestHealthStoreAccessWithReadTypes:(NSSet *)readTypes
-                                   writeTypes:(NSSet *)writeTypes
-                                      handler:(void (^)(void))handler {
-    NSParameterAssert(handler != nil);
-    if ((![HKHealthStore isHealthDataAvailable]) || (!readTypes && !writeTypes)) {
-        _requestedHealthTypesForRead = nil;
-        _requestedHealthTypesForWrite = nil;
-        handler();
-        return;
-    }
-    
-    _requestedHealthTypesForRead = readTypes;
-    _requestedHealthTypesForWrite = writeTypes;
-    
-    __block HKHealthStore *healthStore = [HKHealthStore new];
-    [healthStore requestAuthorizationToShareTypes:writeTypes readTypes:readTypes completion:^(BOOL success, NSError *error) {
-        ORK_Log_Error("Health access: error=%@", error);
-        dispatch_async(dispatch_get_main_queue(), handler);
-        
-        // Clear self-ref.
-        healthStore = nil;
-    }];
 }
 
 - (void)requestPedometerAccessWithHandler:(void (^)(BOOL success))handler {
@@ -425,108 +395,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     return permissions;
 }
 
-- (void)requestHealthAuthorizationWithCompletion:(void (^)(void))completion {
-    if (_hasRequestedHealthData) {
-        if (completion) completion();
-        return;
-    }
-    
-    NSSet *readTypes = nil;
-    if ([self.task respondsToSelector:@selector(requestedHealthKitTypesForReading)]) {
-        readTypes = [self.task requestedHealthKitTypesForReading];
-    }
-    
-    NSSet *writeTypes = nil;
-    if ([self.task respondsToSelector:@selector(requestedHealthKitTypesForWriting)]) {
-        writeTypes = [self.task requestedHealthKitTypesForWriting];
-    }
-    
-    ORKPermissionMask permissions = [self desiredPermissions];
-    
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            ORK_Log_Debug("Requesting health access");
-            [self requestHealthStoreAccessWithReadTypes:readTypes
-                                             writeTypes:writeTypes
-                                                handler:^{
-                                                    dispatch_semaphore_signal(semaphore);
-                                                }];
-        });
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        if (permissions & ORKPermissionCoreMotionAccelerometer) {
-            _grantedPermissions |= ORKPermissionCoreMotionAccelerometer;
-        }
-        if (permissions & ORKPermissionCoreMotionActivity) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                ORK_Log_Debug("Requesting pedometer access");
-                [self requestPedometerAccessWithHandler:^(BOOL success) {
-                    if (success) {
-                        _grantedPermissions |= ORKPermissionCoreMotionActivity;
-                    } else {
-                        _grantedPermissions &= ~ORKPermissionCoreMotionActivity;
-                    }
-                    dispatch_semaphore_signal(semaphore);
-                }];
-            });
-            
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        }
-        if (permissions & ORKPermissionAudioRecording) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                ORK_Log_Debug("Requesting audio access");
-                [self requestAudioRecordingAccessWithHandler:^(BOOL success) {
-                    if (success) {
-                        _grantedPermissions |= ORKPermissionAudioRecording;
-                    } else {
-                        _grantedPermissions &= ~ORKPermissionAudioRecording;
-                    }
-                    dispatch_semaphore_signal(semaphore);
-                }];
-            });
-            
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        }
-        if (permissions & ORKPermissionCoreLocation) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                ORK_Log_Debug("Requesting location access");
-                [self requestLocationAccessWithHandler:^(BOOL success) {
-                    if (success) {
-                        _grantedPermissions |= ORKPermissionCoreLocation;
-                    } else {
-                        _grantedPermissions &= ~ORKPermissionCoreLocation;
-                    }
-                    dispatch_semaphore_signal(semaphore);
-                }];
-            });
-            
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        }
-        if (permissions & ORKPermissionCamera) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                ORK_Log_Debug("Requesting camera access");
-                [self requestCameraAccessWithHandler:^(BOOL success) {
-                    if (success) {
-                        _grantedPermissions |= ORKPermissionCamera;
-                    } else {
-                        _grantedPermissions &= ~ORKPermissionCamera;
-                    }
-                    dispatch_semaphore_signal(semaphore);
-                }];
-            });
-            
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        }
-        
-        _hasRequestedHealthData = YES;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            _hasRequestedHealthData = YES;
-            if (completion) completion();
-        });
-    });
-}
-
 - (void)startAudioPromptSessionIfNeeded {
     id<ORKTask> task = self.task;
     if ([task isKindOfClass:[ORKOrderedTask class]]) {
@@ -583,14 +451,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     }
 }
 
-- (NSSet<HKObjectType *> *)requestedHealthTypesForRead {
-    return _requestedHealthTypesForRead;
-}
-
-- (NSSet<HKObjectType *> *)requestedHealthTypesForWrite {
-    return _requestedHealthTypesForWrite;
-}
-
 - (void)loadView {
     self.view = [[UIView alloc] initWithFrame:CGRectZero];
 }
@@ -618,7 +478,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
             
             if (![step isKindOfClass:[ORKInstructionStep class]]) {
                 [self startAudioPromptSessionIfNeeded];
-                [self requestHealthAuthorizationWithCompletion:nil];
             }
             
             ORKStepViewController *firstViewController = [self viewControllerForStep:step];
@@ -856,27 +715,6 @@ static NSString *const _ChildNavigationControllerRestorationKey = @"childNavigat
     ORKStepViewController *fromController = self.currentStepViewController;
     if (fromController && animated && [self isStepLastBeginningInstructionStep:fromController.step]) {
         [self startAudioPromptSessionIfNeeded];
-        
-        if ( [self grantedAtLeastOnePermission] == NO) {
-            // Do the health request and THEN proceed.
-            [self requestHealthAuthorizationWithCompletion:^{
-                
-                // If we are able to collect any data, proceed.
-                // An alternative rule would be to never proceed if any permission fails.
-                // However, since iOS does not re-present requests for access, we
-                // can easily fail even if the user does not see a dialog, which would
-                // be highly unexpected.
-                if ([self grantedAtLeastOnePermission] == NO) {
-                    [self reportError:[NSError errorWithDomain:NSCocoaErrorDomain
-                                                          code:NSUserCancelledError
-                                                      userInfo:@{@"reason": @"Required permissions not granted."}]
-                               onStep:fromController.step];
-                } else {
-                    [self showStepViewController:stepViewController goForward:goForward animated:animated];
-                }
-            }];
-            return;
-        }
     }
     
     if (step.identifier && ![_managedStepIdentifiers.lastObject isEqualToString:step.identifier]) {
@@ -1466,9 +1304,6 @@ static NSString *const _ORKDiscardableTaskRestoreKey = @"discardableTask";
 static NSString *const _ORKManagedResultsRestoreKey = @"managedResults";
 static NSString *const _ORKManagedStepIdentifiersRestoreKey = @"managedStepIdentifiers";
 static NSString *const _ORKHasSetProgressLabelRestoreKey = @"hasSetProgressLabel";
-static NSString *const _ORKHasRequestedHealthDataRestoreKey = @"hasRequestedHealthData";
-static NSString *const _ORKRequestedHealthTypesForReadRestoreKey = @"requestedHealthTypesForRead";
-static NSString *const _ORKRequestedHealthTypesForWriteRestoreKey = @"requestedHealthTypesForWrite";
 static NSString *const _ORKOutputDirectoryRestoreKey = @"outputDirectory";
 static NSString *const _ORKLastBeginningInstructionStepIdentifierKey = @"lastBeginningInstructionStepIdentifier";
 static NSString *const _ORKTaskIdentifierRestoreKey = @"taskIdentifier";
@@ -1484,8 +1319,6 @@ static NSString *const _ORKProgressMode = @"progressMode";
     [coder encodeBool:self.discardable forKey:_ORKDiscardableTaskRestoreKey];
     [coder encodeObject:_managedResults forKey:_ORKManagedResultsRestoreKey];
     [coder encodeObject:_managedStepIdentifiers forKey:_ORKManagedStepIdentifiersRestoreKey];
-    [coder encodeObject:_requestedHealthTypesForRead forKey:_ORKRequestedHealthTypesForReadRestoreKey];
-    [coder encodeObject:_requestedHealthTypesForWrite forKey:_ORKRequestedHealthTypesForWriteRestoreKey];
     [coder encodeObject:_presentedDate forKey:_ORKPresentedDate];
     [coder encodeInteger:_progressMode forKey:_ORKProgressMode];
     [coder encodeObject:ORKBookmarkDataFromURL(_outputDirectory) forKey:_ORKOutputDirectoryRestoreKey];
@@ -1529,8 +1362,6 @@ static NSString *const _ORKProgressMode = @"progressMode";
         }
         
         if ([_task respondsToSelector:@selector(stepWithIdentifier:)]) {
-            _requestedHealthTypesForRead = [coder decodeObjectOfClass:[NSSet class] forKey:_ORKRequestedHealthTypesForReadRestoreKey];
-            _requestedHealthTypesForWrite = [coder decodeObjectOfClass:[NSSet class] forKey:_ORKRequestedHealthTypesForWriteRestoreKey];
             _presentedDate = [coder decodeObjectOfClass:[NSDate class] forKey:_ORKPresentedDate];
             _lastBeginningInstructionStepIdentifier = [coder decodeObjectOfClass:[NSString class] forKey:_ORKLastBeginningInstructionStepIdentifierKey];
             

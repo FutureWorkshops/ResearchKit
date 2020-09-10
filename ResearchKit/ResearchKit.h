@@ -58,11 +58,9 @@
 #import <ResearchKit/ORKFrontFacingCameraStep.h>
 #import <ResearchKit/ORKWebViewStep.h>
 #import <ResearchKit/ORKCustomStep.h>
-#import <ResearchKit/ORKEnvironmentSPLMeterStep.h>
 #import <ResearchKit/ORKLearnMoreInstructionStep.h>
 #import <ResearchKit/ORKSecondaryTaskStep.h>
 #import <ResearchKit/ORKRequestPermissionsStep.h>
-#import <ResearchKit/ORK3DModelStep.h>
 
 
 #import <ResearchKit/ORKTask.h>
@@ -72,7 +70,6 @@
 #import <ResearchKit/ORKStepNavigationRule.h>
 
 #import <ResearchKit/ORKAnswerFormat.h>
-#import <ResearchKit/ORKHealthAnswerFormat.h>
 
 #import <ResearchKit/ORKResult.h>
 #import <ResearchKit/ORKActiveTaskResult.h>
@@ -84,9 +81,7 @@
 #import <ResearchKit/ORKSignatureResult.h>
 #import <ResearchKit/ORKVideoInstructionStepResult.h>
 #import <ResearchKit/ORKWebViewStepResult.h>
-#import <ResearchKit/ORKEnvironmentSPLMeterResult.h>
 #import <ResearchKit/ORKResultPredicate.h>
-#import <ResearchKit/ORKUSDZModelManagerResult.h>
 
 #import <ResearchKit/ORKTextButton.h>
 #import <ResearchKit/ORKBorderedButton.h>
@@ -132,20 +127,6 @@
 #import <ResearchKit/ORKDataCollectionManager.h>
 #import <ResearchKit/ORKCollector.h>
 
-#import <ResearchKit/ORKTouchAbilityTouch.h>
-#import <ResearchKit/ORKTouchAbilityTrack.h>
-#import <ResearchKit/ORKTouchAbilityGestureRecoginzerEvent.h>
-#import <ResearchKit/ORKTouchAbilityTrial.h>
-#import <ResearchKit/ORKTouchAbilityTapTrial.h>
-#import <ResearchKit/ORKTouchAbilityLongPressTrial.h>
-#import <ResearchKit/ORKTouchAbilitySwipeTrial.h>
-#import <ResearchKit/ORKTouchAbilityScrollTrial.h>
-#import <ResearchKit/ORKTouchAbilityPinchTrial.h>
-#import <ResearchKit/ORKTouchAbilityRotationTrial.h>
-
-#import <ResearchKit/ORK3DModelManager.h>
-#import <ResearchKit/ORKUSDZModelManager.h>
 #import <ResearchKit/ORKPermissionType.h>
-#import <ResearchKit/ORKHealthKitPermissionType.h>
 
 #import <ResearchKit/ORKDeprecated.h>

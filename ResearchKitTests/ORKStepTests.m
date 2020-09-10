@@ -75,7 +75,6 @@
     XCTAssert([step isEqual:step]);
     XCTAssertFalse([step isEqual:@"TEST"]);
     XCTAssertEqual([step requestedPermissions], ORKPermissionNone);
-    XCTAssertEqualObjects([step requestedHealthKitTypesForReading], nil);
 }
 
 - (void)testCopyWithIdentifier {
@@ -188,55 +187,6 @@
     
     [formStep setFormItems:items];
     XCTAssertThrows([formStep validateParameters]);
-}
-
-@end
-
-@interface ORKReactionTimeStepTests : XCTestCase
-
-@end
-
-@implementation ORKReactionTimeStepTests
-
-- (void)testAttributes {
-    ORKReactionTimeStep *validReactionTimeStep = [[ORKReactionTimeStep alloc] initWithIdentifier:@"ReactionTimeStep"];
-    
-    validReactionTimeStep.maximumStimulusInterval = 8;
-    validReactionTimeStep.minimumStimulusInterval = 4;
-    validReactionTimeStep.thresholdAcceleration = 0.5;
-    validReactionTimeStep.numberOfAttempts = 3;
-    validReactionTimeStep.timeout = 10;
-    
-    XCTAssertNoThrow([validReactionTimeStep validateParameters]);
-    
-    ORKReactionTimeStep *reactionTimeStep = [validReactionTimeStep copy];
-    XCTAssertEqualObjects(reactionTimeStep, validReactionTimeStep);
-    
-    // minimumStimulusInterval cannot be zero or less
-    reactionTimeStep = [validReactionTimeStep copy];
-    validReactionTimeStep.minimumStimulusInterval = 0;
-    XCTAssertThrows([validReactionTimeStep validateParameters]);
-    
-    // minimumStimulusInterval cannot be higher than maximumStimulusInterval
-    reactionTimeStep = [validReactionTimeStep copy];
-    validReactionTimeStep.maximumStimulusInterval = 8;
-    validReactionTimeStep.minimumStimulusInterval = 10;
-    XCTAssertThrows([validReactionTimeStep validateParameters]);
-    
-    // thresholdAcceleration cannot be zero or less
-    reactionTimeStep = [validReactionTimeStep copy];
-    validReactionTimeStep.thresholdAcceleration = 0;
-    XCTAssertThrows([validReactionTimeStep validateParameters]);
-    
-    // timeout cannot be zero or less
-    reactionTimeStep = [validReactionTimeStep copy];
-    validReactionTimeStep.timeout = 0;
-    XCTAssertThrows([validReactionTimeStep validateParameters]);
-    
-    // numberOfAttempts cannot be zero or less
-    reactionTimeStep = [validReactionTimeStep copy];
-    validReactionTimeStep.numberOfAttempts = 0;
-    XCTAssertThrows([validReactionTimeStep validateParameters]);
 }
 
 @end
@@ -405,7 +355,6 @@
     XCTAssertEqual([step useCardView], NO);
     XCTAssertEqual([step isOptional], NO);
     XCTAssertNoThrowSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException, @"Should not throw exception");
-    XCTAssertEqual([step requestedHealthKitTypesForReading], nil);
     XCTAssertEqual([step stepViewControllerClass], [ORKQuestionStepViewController class], @"Should return ORKQuestionStepViewController");
     XCTAssert([step isEqual:step]);
     XCTAssertEqual([step questionType], ORKQuestionTypeText, @"Should return ORKQuestionTypeText");
@@ -502,38 +451,6 @@
     NSString *identifier = @"STEP";
     ORKLearnMoreInstructionStep *step = [[ORKLearnMoreInstructionStep alloc] initWithIdentifier:identifier];
     XCTAssertEqual([step identifier], identifier);
-}
-
-@end
-
-@interface ORKEnvironmentSPLMeterStepTests : XCTestCase
-
-@end
-
-@implementation ORKEnvironmentSPLMeterStepTests
-
-- (void)testAttributes {
-    NSString *identifier = @"STEP";
-    ORKEnvironmentSPLMeterStep *step = [[ORKEnvironmentSPLMeterStep alloc] initWithIdentifier:identifier];
-    
-    XCTAssertEqual([step identifier], identifier);
-    XCTAssertNoThrow([step validateParameters]);
-    XCTAssertEqual([step thresholdValue], 35.0);
-    XCTAssertEqual([step samplingInterval], 1.0);
-    XCTAssertEqual([step requiredContiguousSamples], 5);
-    
-    [step setThresholdValue:-1];
-    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
-    
-    [step setSamplingInterval:-1];
-    [step setThresholdValue:0];
-    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
-    
-    [step setRequiredContiguousSamples:0];
-    [step setThresholdValue:2];
-    XCTAssertThrowsSpecificNamed([step validateParameters], NSException, NSInvalidArgumentException);
-    
-    XCTAssert([step isEqual:step]);
 }
 
 @end

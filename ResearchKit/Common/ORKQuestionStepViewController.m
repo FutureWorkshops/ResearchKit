@@ -76,7 +76,6 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
     
     ORKTableContainerView *_tableContainer;
     ORKStepContentView *_headerView;
-    ORKAnswerDefaultSource *_defaultSource;
     
     NSCalendar *_savedSystemCalendar;
     NSTimeZone *_savedSystemTimeZone;
@@ -140,7 +139,6 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
 - (instancetype)initWithStep:(ORKStep *)step {
     self = [super initWithStep:step];
     if (self) {
-        _defaultSource = [ORKAnswerDefaultSource sourceWithHealthStore:[HKHealthStore new]];
     }
     return self;
 }
@@ -387,32 +385,6 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
         [self.taskViewController setRegisteredScrollView:_tableView];
     }
     
-    
-    NSMutableSet *types = [NSMutableSet set];
-    ORKAnswerFormat *format = [[self questionStep] answerFormat];
-    HKObjectType *objType = [format healthKitObjectTypeForAuthorization];
-    if (objType) {
-        [types addObject:objType];
-    }
-    
-    BOOL scheduledRefresh = NO;
-    if (types.count) {
-        NSSet<HKObjectType *> *alreadyRequested = [[self taskViewController] requestedHealthTypesForRead];
-        if (![types isSubsetOfSet:alreadyRequested]) {
-            scheduledRefresh = YES;
-            [_defaultSource.healthStore requestAuthorizationToShareTypes:nil readTypes:types completion:^(BOOL success, NSError *error) {
-                if (success) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self refreshDefaults];
-                    });
-                }
-            }];
-        }
-    }
-    if (!scheduledRefresh) {
-        [self refreshDefaults];
-    }
-    
     if (_tableContainer) {
         [_tableContainer sizeHeaderToFit];
         [_tableContainer resizeFooterToFit];
@@ -442,28 +414,6 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
         }
     }
     [self updateButtonStates];
-}
-
-- (void)refreshDefaults {
-    [_defaultSource fetchDefaultValueForAnswerFormat:[[self questionStep] answerFormat] handler:^(id defaultValue, NSError *error) {
-        if (defaultValue != nil || error == nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                _defaultAnswer = defaultValue;
-                [self defaultAnswerDidChange];
-            });
-        } else {
-            ORK_Log_Error("Error fetching default: %@", error);
-        }
-    }];
-}
-
-- (void)defaultAnswerDidChange {
-    id defaultAnswer = _defaultAnswer;
-    if (![self hasAnswer] && defaultAnswer && !self.hasChangedAnswer) {
-        _answer = defaultAnswer;
-        
-        [self answerDidChange];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {

@@ -31,7 +31,6 @@
 
 @import Foundation;
 @import UIKit;
-@import HealthKit;
 #import <ResearchKit/ORKTypes.h>
 
 
@@ -257,18 +256,6 @@ Whether to show progress for this step when it is presented. The default is YES.
  required by the recorders. Subclasses may override this implementation.
  */
 @property (nonatomic, readonly) ORKPermissionMask requestedPermissions;
-
-/**
- The set of HealthKit types the step requests for reading. (read-only)
- 
- The task view controller uses this set of types when constructing a list of
- all the HealthKit types required by all the steps in a task, so that it can
- present the HealthKit access dialog just once during that task.
- 
- By default, the property scans the recorders and collates the HealthKit
- types the recorders require. Subclasses may override this implementation.
- */
-@property (nonatomic, readonly, nullable) NSSet<HKObjectType *> *requestedHealthKitTypesForReading;
 
 /**
  Checks the parameters of the step and throws exceptions on invalid parameters.

@@ -620,15 +620,4 @@ static const NSInteger kNumberOfSamples = 5;
     XCTAssertTrue([recorder isKindOfClass:recorderClass], @"");
 }
 
-- (void)testHealthQuantityTypeRecorder {
-    
-    HKUnit *bpmUnit = [[HKUnit countUnit] unitDividedByUnit:[HKUnit minuteUnit]];
-    HKQuantityType *hbQuantityType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
-    ORKHealthQuantityTypeRecorderConfiguration *recorderConfiguration = [[ORKHealthQuantityTypeRecorderConfiguration alloc] initWithIdentifier:@"healtQuantityTypeRecorder" healthQuantityType:hbQuantityType unit:bpmUnit];
-    Class recorderClass = [ORKHealthQuantityTypeRecorder class];
-    ORKHealthQuantityTypeRecorder *recorder = (ORKHealthQuantityTypeRecorder *)[self createRecorder:recorderConfiguration];
-    
-    XCTAssertTrue([recorder isKindOfClass:recorderClass], @"");
-}
-
 @end

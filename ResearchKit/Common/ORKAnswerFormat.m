@@ -38,13 +38,11 @@
 #import "ORKAnswerFormat_Internal.h"
 
 #import "ORKChoiceAnswerFormatHelper.h"
-#import "ORKHealthAnswerFormat.h"
 #import "ORKQuestionResult_Private.h"
 #import "ORKResult_Private.h"
 
 #import "ORKHelpers_Internal.h"
 
-@import HealthKit;
 @import MapKit;
 @import Contacts;
 
@@ -87,187 +85,6 @@ NSString *ORKQuestionTypeString(ORKQuestionType questionType) {
 static NSNumberFormatterStyle ORKNumberFormattingStyleConvert(ORKNumberFormattingStyle style) {
     return style == ORKNumberFormattingStylePercent ? NSNumberFormatterPercentStyle : NSNumberFormatterDecimalStyle;
 }
-
-
-@implementation ORKAnswerDefaultSource {
-    NSMutableDictionary *_unitsTable;
-}
-
-@synthesize healthStore=_healthStore;
-
-+ (instancetype)sourceWithHealthStore:(HKHealthStore *)healthStore {
-    ORKAnswerDefaultSource *source = [[ORKAnswerDefaultSource alloc] initWithHealthStore:healthStore];
-    return source;
-}
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-designated-initializers"
-- (instancetype)init {
-    ORKThrowMethodUnavailableException();
-}
-#pragma clang diagnostic pop
-
-- (instancetype)initWithHealthStore:(HKHealthStore *)healthStore {
-    self = [super init];
-    if (self) {
-        _healthStore = healthStore;
-        
-        if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){.majorVersion = 8, .minorVersion = 2, .patchVersion = 0}]) {
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(healthKitUserPreferencesDidChange:)
-                                                         name:HKUserPreferencesDidChangeNotification
-                                                       object:healthStore];
-        }
-    }
-    return self;
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)healthKitUserPreferencesDidChange:(NSNotification *)notification {
-    _unitsTable = nil;
-}
-
-- (id)defaultValueForCharacteristicType:(HKCharacteristicType *)characteristicType error:(NSError **)errorOut {
-    id result = nil;
-    if ([[characteristicType identifier] isEqualToString:HKCharacteristicTypeIdentifierDateOfBirth]) {
-        NSDate *dob = [[NSCalendar currentCalendar] dateFromComponents:[_healthStore dateOfBirthComponentsWithError:errorOut]];
-        if (dob) {
-            result = dob;
-        }
-    }
-    if ([[characteristicType identifier] isEqualToString:HKCharacteristicTypeIdentifierBloodType]) {
-        HKBloodTypeObject *bloodType = [_healthStore bloodTypeWithError:errorOut];
-        if (bloodType && bloodType.bloodType != HKBloodTypeNotSet) {
-            result = ORKHKBloodTypeString(bloodType.bloodType);
-        }
-        if (result) {
-            result = @[result];
-        }
-    }
-    if ([[characteristicType identifier] isEqualToString:HKCharacteristicTypeIdentifierBiologicalSex]) {
-        HKBiologicalSexObject *biologicalSex = [_healthStore biologicalSexWithError:errorOut];
-        if (biologicalSex && biologicalSex.biologicalSex != HKBiologicalSexNotSet) {
-            result = ORKHKBiologicalSexString(biologicalSex.biologicalSex);
-        }
-        if (result) {
-            result = @[result];
-        }
-    }
-    if ([[characteristicType identifier] isEqualToString:HKCharacteristicTypeIdentifierFitzpatrickSkinType]) {
-        HKFitzpatrickSkinTypeObject *skinType = [_healthStore fitzpatrickSkinTypeWithError:errorOut];
-        if (skinType && skinType.skinType != HKFitzpatrickSkinTypeNotSet) {
-            result = @(skinType.skinType);
-        }
-        if (result) {
-            result = @[result];
-        }
-    }
-    if (ORK_IOS_10_WATCHOS_3_AVAILABLE && [[characteristicType identifier] isEqualToString:HKCharacteristicTypeIdentifierWheelchairUse]) {
-        HKWheelchairUseObject *wheelchairUse = [_healthStore wheelchairUseWithError:errorOut];
-        if (wheelchairUse && wheelchairUse.wheelchairUse != HKWheelchairUseNotSet) {
-            result = (wheelchairUse.wheelchairUse == HKWheelchairUseYes) ? @YES : @NO;
-        }
-        if (result) {
-            result = @[result];
-        }
-    }
-    return result;
-}
-
-- (void)fetchDefaultValueForQuantityType:(HKQuantityType *)quantityType unit:(HKUnit *)unit handler:(void(^)(id defaultValue, NSError *error))handler {
-    if (!unit) {
-        handler(nil, nil);
-        return;
-    }
-    
-    HKHealthStore *healthStore = _healthStore;
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:HKSampleSortIdentifierEndDate ascending:NO];
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        HKSampleQuery *sampleQuery = [[HKSampleQuery alloc] initWithSampleType:quantityType predicate:nil limit:1 sortDescriptors:@[sortDescriptor] resultsHandler:^(HKSampleQuery *query, NSArray *results, NSError *error) {
-            HKQuantitySample *sample = results.firstObject;
-            id value = nil;
-            if (sample) {
-                if (unit == [HKUnit percentUnit]) {
-                    value = @(100 * [sample.quantity doubleValueForUnit:unit]);
-                } else {
-                    value = @([sample.quantity doubleValueForUnit:unit]);
-                }
-            }
-            handler(value, error);
-        }];
-        [healthStore executeQuery:sampleQuery];
-    });
-}
-
-- (void)fetchDefaultValueForAnswerFormat:(ORKAnswerFormat *)answerFormat handler:(void(^)(id defaultValue, NSError *error))handler {
-    HKObjectType *objectType = [answerFormat healthKitObjectType];
-    BOOL handled = NO;
-    if (objectType) {
-        if ([HKHealthStore isHealthDataAvailable]) {
-            if ([answerFormat isKindOfClass:[ORKHealthKitCharacteristicTypeAnswerFormat class]]) {
-                NSError *error = nil;
-                id defaultValue = [self defaultValueForCharacteristicType:(HKCharacteristicType *)objectType error:&error];
-                handler(defaultValue, error);
-                handled = YES;
-            } else if ([answerFormat isKindOfClass:[ORKHealthKitQuantityTypeAnswerFormat class]]) {
-                [self updateHealthKitUnitForAnswerFormat:answerFormat force:NO];
-                HKUnit *unit = [answerFormat healthKitUserUnit];
-                [self fetchDefaultValueForQuantityType:(HKQuantityType *)objectType unit:unit handler:handler];
-                handled = YES;
-            }
-        }
-    }
-    if (!handled) {
-        handler(nil, nil);
-    }
-}
-
-- (HKUnit *)defaultHealthKitUnitForAnswerFormat:(ORKAnswerFormat *)answerFormat {
-    __block HKUnit *unit = [answerFormat healthKitUnit];
-    HKObjectType *objectType = [answerFormat healthKitObjectType];
-    if (![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){.majorVersion = 8, .minorVersion = 2, .patchVersion = 0}]) {
-        return unit;
-    }
-    
-    if (unit == nil && [objectType isKindOfClass:[HKQuantityType class]] && [HKHealthStore isHealthDataAvailable]) {
-        unit = _unitsTable[objectType];
-        if (unit) {
-            return unit;
-        }
-        if (!_unitsTable) {
-            _unitsTable = [NSMutableDictionary dictionary];
-        }
-        
-        HKQuantityType *quantityType = (HKQuantityType *)objectType;
-        
-        dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-        [_healthStore preferredUnitsForQuantityTypes:[NSSet setWithObject:quantityType] completion:^(NSDictionary *preferredUnits, NSError *error) {
-            
-            unit = preferredUnits[quantityType];
-            
-            dispatch_semaphore_signal(sem);
-        }];
-        dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
-        
-        if (unit) {
-            _unitsTable[objectType] = unit;
-        }
-    }
-    return unit;
-}
-
-- (void)updateHealthKitUnitForAnswerFormat:(ORKAnswerFormat *)answerFormat force:(BOOL)force {
-    HKUnit *unit = [answerFormat healthKitUserUnit];
-    HKUnit *healthKitDefault = [self defaultHealthKitUnitForAnswerFormat:answerFormat];
-    if (!ORKEqualObjects(unit,healthKitDefault) && (force || (unit == nil))) {
-        [answerFormat setHealthKitUserUnit:healthKitDefault];
-    }
-}
-
-@end
 
 
 #pragma mark - ORKAnswerFormat
@@ -505,30 +322,6 @@ static NSNumberFormatterStyle ORKNumberFormattingStyleConvert(ORKNumberFormattin
 - (NSUInteger)hash {
     // Ignore the task reference - it's not part of the content of the step.
     return 0;
-}
-
-- (BOOL)isHealthKitAnswerFormat {
-    return NO;
-}
-
-- (HKObjectType *)healthKitObjectType {
-    return nil;
-}
-
-- (HKObjectType *)healthKitObjectTypeForAuthorization {
-    return nil;
-}
-
-- (HKUnit *)healthKitUnit {
-    return nil;
-}
-
-- (HKUnit *)healthKitUserUnit {
-    return nil;
-}
-
-- (void)setHealthKitUserUnit:(HKUnit *)unit {
-    
 }
 
 - (ORKQuestionType)questionType {

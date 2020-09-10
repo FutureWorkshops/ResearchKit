@@ -133,16 +133,6 @@ ORK_EXTERN BOOL ORKLoggingEnabled;
 
 #define ORK_DISPATCH_EXEC(queue, block, ...) if (block) { dispatch_async(queue, ^{ block(__VA_ARGS__); } ); }
 
-/*
- * For testing background delivery
- *
- */
-#if ORK_BACKGROUND_DELIVERY_TEST
-#  define ORK_HEALTH_UPDATE_FREQUENCY HKUpdateFrequencyImmediate
-#else
-#  define ORK_HEALTH_UPDATE_FREQUENCY HKUpdateFrequencyDaily
-#endif
-
 // Find the first object of the specified class, using method as the iterator
 #define ORKFirstObjectOfClass(C,p,method) ({ id v = p; while (v != nil) { if ([v isKindOfClass:[C class]]) { break; } else { v = [v method]; } }; v; })
 

@@ -1051,18 +1051,6 @@ static NSMutableDictionary<NSString *, ORKESerializableTableEntry *> *ORKESerial
                  (@{
                     PROPERTY(result, NSString, NSObject, YES, nil, nil)
                     })),
-           ENTRY(ORKHealthQuantityTypeRecorderConfiguration,
-                 ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
-                     return [[ORKHealthQuantityTypeRecorderConfiguration alloc] initWithIdentifier:GETPROP(dict, identifier) healthQuantityType:GETPROP(dict, quantityType) unit:GETPROP(dict, unit)];
-                 },
-                 (@{
-                    PROPERTY(quantityType, HKQuantityType, NSObject, NO,
-                             ^id(id type, __unused ORKESerializationContext *context) { return [(HKQuantityType *)type identifier]; },
-                             ^id(id string, __unused ORKESerializationContext *context) { return [HKQuantityType quantityTypeForIdentifier:string]; }),
-                    PROPERTY(unit, HKUnit, NSObject, NO,
-                             ^id(id unit, __unused ORKESerializationContext *context) { return [(HKUnit *)unit unitString]; },
-                             ^id(id string, __unused ORKESerializationContext *context) { return [HKUnit unitFromString:string]; }),
-                    })),
            ENTRY(ORKActiveStep,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
                      return [[ORKActiveStep alloc] initWithIdentifier:GETPROP(dict, identifier)];
@@ -1495,44 +1483,6 @@ static NSMutableDictionary<NSString *, ORKESerializableTableEntry *> *ORKESerial
                  },
                  (@{
                     PROPERTY(pageTask, ORKOrderedTask, NSObject, NO, nil, nil),
-                    })),
-           ENTRY(ORKHealthKitCharacteristicTypeAnswerFormat,
-                 ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
-                     return [[ORKHealthKitCharacteristicTypeAnswerFormat alloc] initWithCharacteristicType:GETPROP(dict, characteristicType)];
-                 },
-                 (@{
-                    PROPERTY(characteristicType, HKCharacteristicType, NSObject, NO,
-                             ^id(id type, __unused ORKESerializationContext *context) { return [(HKCharacteristicType *)type identifier]; },
-                             ^id(id string, __unused ORKESerializationContext *context) { return [HKCharacteristicType characteristicTypeForIdentifier:string]; }),
-                    PROPERTY(defaultDate, NSDate, NSObject, YES,
-                             ^id(id date, __unused ORKESerializationContext *context) { return [ORKResultDateTimeFormatter() stringFromDate:date]; },
-                             ^id(id string, __unused ORKESerializationContext *context) { return [ORKResultDateTimeFormatter() dateFromString:string]; }),
-                    PROPERTY(minimumDate, NSDate, NSObject, YES,
-                             ^id(id date, __unused ORKESerializationContext *context) { return [ORKResultDateTimeFormatter() stringFromDate:date]; },
-                             ^id(id string, __unused ORKESerializationContext *context) { return [ORKResultDateTimeFormatter() dateFromString:string]; }),
-                    PROPERTY(maximumDate, NSDate, NSObject, YES,
-                             ^id(id date, __unused ORKESerializationContext *context) { return [ORKResultDateTimeFormatter() stringFromDate:date]; },
-                             ^id(id string, __unused ORKESerializationContext *context) { return [ORKResultDateTimeFormatter() dateFromString:string]; }),
-                    PROPERTY(calendar, NSCalendar, NSObject, YES,
-                             ^id(id calendar, __unused ORKESerializationContext *context) { return [(NSCalendar *)calendar calendarIdentifier]; },
-                             ^id(id string, __unused ORKESerializationContext *context) { return [NSCalendar calendarWithIdentifier:string]; }),
-                    PROPERTY(shouldRequestAuthorization, NSNumber, NSObject, YES, nil, nil),
-                    })),
-           ENTRY(ORKHealthKitQuantityTypeAnswerFormat,
-                 ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
-                     return [[ORKHealthKitQuantityTypeAnswerFormat alloc] initWithQuantityType:GETPROP(dict, quantityType) unit:GETPROP(dict, unit) style:((NSNumber *)GETPROP(dict, numericAnswerStyle)).integerValue];
-                 },
-                 (@{
-                    PROPERTY(unit, HKUnit, NSObject, NO,
-                             ^id(id unit, __unused ORKESerializationContext *context) { return [(HKUnit *)unit unitString]; },
-                             ^id(id string, __unused ORKESerializationContext *context) { return [HKUnit unitFromString:string]; }),
-                    PROPERTY(quantityType, HKQuantityType, NSObject, NO,
-                             ^id(id type, __unused ORKESerializationContext *context) { return [(HKQuantityType *)type identifier]; },
-                             ^id(id string, __unused ORKESerializationContext *context) { return [HKQuantityType quantityTypeForIdentifier:string]; }),
-                    PROPERTY(numericAnswerStyle, NSNumber, NSObject, NO,
-                             ^id(id num, __unused ORKESerializationContext *context) { return ORKNumericAnswerStyleToString(((NSNumber *)num).integerValue); },
-                             ^id(id string, __unused ORKESerializationContext *context) { return @(ORKNumericAnswerStyleFromString(string)); }),
-                    PROPERTY(shouldRequestAuthorization, NSNumber, NSObject, YES, nil, nil),
                     })),
            ENTRY(ORKAnswerFormat,
                  nil,
@@ -2270,18 +2220,6 @@ static NSMutableDictionary<NSString *, ORKESerializableTableEntry *> *ORKESerial
                      PROPERTY(retryCount, NSNumber, NSObject, NO, nil, nil)
                   })),
            } mutableCopy];
-        if (@available(iOS 12.0, *)) {
-            [internalEncodingTable addEntriesFromDictionary:@{ ENTRY(ORKHealthClinicalTypeRecorderConfiguration,
-                   ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
-                       return [[ORKHealthClinicalTypeRecorderConfiguration alloc] initWithIdentifier:GETPROP(dict, identifier) healthClinicalType:GETPROP(dict, healthClinicalType) healthFHIRResourceType:GETPROP(dict, healthFHIRResourceType)];
-                   },
-                   (@{
-                      PROPERTY(healthClinicalType, HKClinicalType, NSObject, NO,
-                               ^id(id type, __unused ORKESerializationContext *context) { return identifierFromClinicalType(type); },
-                               ^id(id identifier, __unused ORKESerializationContext *context) { return  typeFromIdentifier(identifier); }),
-                      PROPERTY(healthFHIRResourceType, NSString, NSObject, NO, nil, nil),
-                      })) }];
-        }
     });
     return internalEncodingTable;
 }

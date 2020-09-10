@@ -37,8 +37,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class ORKCollector;
-@class ORKHealthCollector;
-@class ORKHealthCorrelationCollector;
 @class ORKMotionActivityCollector;
 @class ORKDataCollectionManager;
 
@@ -50,30 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ORKDataCollectionManagerDelegate <NSObject>
 
 @optional
-/**
- Method for delivering the collected health data samples.
- 
- @param collector   The data collector.
- @param samples     Collected health data samples.
- 
- @return Boolean indicating whether the samples has be accepted.
- If NO is returned or this method is not implemented, the manager will stop the collection for the collector and repeat this same collection next time,
- until the data is accepted.
- */
-- (BOOL)healthCollector:(ORKHealthCollector *)collector didCollectSamples:(NSArray<HKSample *> *)samples;
-
-/**
- Method for delivering the collected health correlations.
- 
- @param collector       The data collector.
- @param correlations    Collected health correlation samples.
- 
- @return Boolean indicating whether the samples has be accepted.
- If NO is returned or this method is not implemented, the manager will stop the collection for the collector and repeat this same collection next time,
- until the data is accepted.
- */
-- (BOOL)healthCorrelationCollector:(ORKHealthCorrelationCollector *)collector didCollectCorrelations:(NSArray<HKCorrelation *> *)correlations;
-
 /**
  Method for delivering the collected motion activities.
  
@@ -104,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- The data collection manager is used to collect HealthKit data and CoreMotion data.
+ The data collection manager is used to collect CoreMotion data.
  
  It uses collectors to track data types to be collected.
  Anchors are used to track progress of each types of data to avoid duplications.
@@ -135,37 +109,6 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic, weak, nullable) id<ORKDataCollectionManagerDelegate> delegate;
 
-/**
- Add a collector for HealthKit quantity and category samples.
- 
- @param sampleType  HealthKit sample type.
- @param unit        HealthKit unit into which data should be collected.
- @param startDate   Samples should be collected starting at this date.
- @param error       Any error detected during this operation.
- 
- @return Initiated health collector.
- */
-- (ORKHealthCollector *)addHealthCollectorWithSampleType:(HKSampleType *)sampleType
-                                                    unit:(HKUnit *)unit
-                                               startDate:(NSDate *)startDate
-                                                   error:(NSError * _Nullable *)error;
-
-/**
- Add a collector for HealthKit correlations.
- 
- @param correlationType     HealthKit correlation type.
- @param sampleTypes         Array of HKSampleType expected in the correlation.
- @param units               Array of HKUnit to use when serializing the samples collected (should be same size as sampleTypes).
- @param startDate           Samples should be collected starting at this date.
- @param error               Any error detected during this operation.
- 
- @return Initiated health correlation collector.
- */
-- (ORKHealthCorrelationCollector *)addHealthCorrelationCollectorWithCorrelationType:(HKCorrelationType *)correlationType
-                                                                        sampleTypes:(NSArray<HKSampleType *> *)sampleTypes
-                                                                              units:(NSArray<HKUnit *> *)units
-                                                                          startDate:(NSDate *)startDate
-                                                                              error:(NSError * _Nullable *)error;
 
 /**
  Add a collector for motion activity.

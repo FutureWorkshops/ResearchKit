@@ -310,7 +310,6 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
 
 
 @implementation ORKFormStepViewController {
-    ORKAnswerDefaultSource *_defaultSource;
     NSMutableSet *_formItemCells;
     NSMutableArray<ORKTableSection *> *_sections;
     NSMutableSet *_answeredSections;
@@ -321,7 +320,6 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
 }
 
 - (instancetype)ORKFormStepViewController_initWithResult:(ORKResult *)result {
-    _defaultSource = [ORKAnswerDefaultSource sourceWithHealthStore:[HKHealthStore new]];
     if (result) {
         NSAssert([result isKindOfClass:[ORKStepResult class]], @"Expect a ORKStepResult instance");
 
@@ -363,33 +361,6 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self updateAnsweredSections];
-    NSMutableSet *types = [NSMutableSet set];
-    for (ORKFormItem *item in [self formItems]) {
-        ORKAnswerFormat *format = [item answerFormat];
-        HKObjectType *objType = [format healthKitObjectTypeForAuthorization];
-        if (objType) {
-            [types addObject:objType];
-        }
-    }
-    
-    BOOL refreshDefaultsPending = NO;
-    if (types.count) {
-        NSSet<HKObjectType *> *alreadyRequested = [[self taskViewController] requestedHealthTypesForRead];
-        if (![types isSubsetOfSet:alreadyRequested]) {
-            refreshDefaultsPending = YES;
-            [_defaultSource.healthStore requestAuthorizationToShareTypes:nil readTypes:types completion:^(BOOL success, NSError *error) {
-                if (!success) {
-                    ORK_Log_Debug("Authorization: %@",error);
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self refreshDefaults];
-                });
-            }];
-        }
-    }
-    if (!refreshDefaultsPending) {
-        [self refreshDefaults];
-    }
     
     // Reset skipped flag - result can now be non-empty
     _skipped = NO;
@@ -460,38 +431,6 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
     _skipped = NO;
     [self updateButtonStates];
     [self notifyDelegateOnResultChange];
-}
-
-- (void)refreshDefaults {
-    NSArray *formItems = [self formItems];
-    ORKAnswerDefaultSource *source = _defaultSource;
-    ORKWeakTypeOf(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        __block NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
-        for (ORKFormItem *formItem in formItems) {
-            [source fetchDefaultValueForAnswerFormat:formItem.answerFormat handler:^(id defaultValue, NSError *error) {
-                if (defaultValue != nil) {
-                    defaults[formItem.identifier] = defaultValue;
-                } else if (error != nil) {
-                    ORK_Log_Error("Error fetching default for %@: %@", formItem, error);
-                }
-                dispatch_semaphore_signal(semaphore);
-            }];
-        }
-        for (__unused ORKFormItem *formItem in formItems) {
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        }
-        
-        // All fetches have completed.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            ORKStrongTypeOf(weakSelf) strongSelf = weakSelf;
-            [strongSelf updateDefaults:defaults];
-        });
-        
-    });
-    
-    
 }
 
 - (void)removeAnswerForIdentifier:(NSString *)identifier {
