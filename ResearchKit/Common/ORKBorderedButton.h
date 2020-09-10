@@ -56,7 +56,7 @@ ORK_CLASS_AVAILABLE
 /**
 The text color of the bordered button
 */
-@property (nonatomic) UIColor *titleColor;
+@property (nonatomic) UIColor *titleColor UI_APPEARANCE_SELECTOR;
 
 /**
  The delay in fading animation

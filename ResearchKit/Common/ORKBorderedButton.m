@@ -40,6 +40,10 @@ static const CGFloat ORKBorderedButtonCornerRadii = 14.0;
     BOOL _useBoldFont;
 }
 
++ (void)initialize {
+    [[ORKBorderedButton appearance] setTitleColor:[UIColor whiteColor]];
+}
+
 - (void)init_ORKTextButton {
     [super init_ORKTextButton];
     [self setLayerAndFadeDelay];
@@ -76,7 +80,6 @@ static const CGFloat ORKBorderedButtonCornerRadii = 14.0;
 - (void)setDefaultTintColors {
     _normalTintColor = [[self tintColor] colorWithAlphaComponent:1.0f];
     _normalHighlightOrSelectTintColor = [_normalTintColor colorWithAlphaComponent:0.7f];
-    _titleColor = [UIColor whiteColor];
 }
 
 - (void)setNormalTintColor:(UIColor *)normalTintColor {
