@@ -60,7 +60,7 @@ static const CGFloat ErrorLabelTopPadding = 4.0;
 static const CGFloat ErrorLabelBottomPadding = 10.0;
 static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
 static const CGFloat DividerViewTopPadding = 10.0;
-static const CGFloat InlineFormItemLabelToTextFieldPadding = 3.0;
+static const CGFloat InlineFormItemLabelToTextFieldPadding = 10.0;
 
 @interface ORKFormItemCell ()
 
@@ -137,6 +137,7 @@ static const CGFloat InlineFormItemLabelToTextFieldPadding = 3.0;
         _labelLabel = [[ORKCaption1Label alloc] init];
         _labelLabel.text = formItem.text;
         _labelLabel.numberOfLines = 0;
+        _labelLabel.minimumScaleFactor = 0.8;
         [self setBackgroundColor:[UIColor clearColor]];
         _containerView = [UIView new];
         [_containerView addSubview:_labelLabel];
