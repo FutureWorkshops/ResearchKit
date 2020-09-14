@@ -1125,6 +1125,7 @@ static const CGFloat InlineFormItemLabelToTextFieldPadding = 10.0;
     _lastSeenLineCount = 1;
     self.labelLabel.text = nil;
     _textView = [[ORKFormTextView alloc] init];
+    _textView.backgroundColor = nil; // i.e. clear color to match cell background
     _textView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     _textView.delegate = self;
     _textView.contentInset = UIEdgeInsetsMake(-5.0, -4.0, -5.0, 0.0);
@@ -1231,7 +1232,11 @@ static const CGFloat InlineFormItemLabelToTextFieldPadding = 10.0;
 }
 
 - (UIColor *)placeholderColor {
-    return [UIColor ork_midGrayTintColor];
+    if (@available(iOS 13.0, *)) {
+        return [UIColor placeholderTextColor];
+    } else {
+        return [UIColor ork_midGrayTintColor];
+    }
 }
 
 #pragma mark UITextViewDelegate
