@@ -42,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)stepDidChange;
 
+@property (nonatomic, strong, nullable) ORKNavigationContainerView *navigationFooterView;
+
 @property (nonatomic, copy, nullable) NSURL *outputDirectory;
 @property (nonatomic, copy, readonly, nullable) NSArray <ORKResult *> *addedResults;
 
