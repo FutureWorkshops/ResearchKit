@@ -48,6 +48,7 @@
     self = [super initWithIdentifier:identifier];
     if (self) {
         self.optional = YES;
+        self.devicePosition = AVCaptureDevicePositionBack;
     }
     return self;
 }
@@ -60,6 +61,7 @@
         ORK_DECODE_OBJ(aDecoder, accessibilityHint);
         ORK_DECODE_OBJ(aDecoder, accessibilityInstructions);
         ORK_DECODE_BOOL(aDecoder, captureRaw);
+        ORK_DECODE_ENUM(aDecoder, devicePosition);
     }
     return self;
 }
@@ -71,6 +73,7 @@
     ORK_ENCODE_OBJ(aCoder, accessibilityHint);
     ORK_ENCODE_OBJ(aCoder, accessibilityInstructions);
     ORK_ENCODE_BOOL(aCoder, captureRaw);
+    ORK_ENCODE_ENUM(aCoder, devicePosition);
 }
 
 + (BOOL)supportsSecureCoding {
@@ -84,6 +87,7 @@
     step.accessibilityHint = self.accessibilityHint;
     step.accessibilityInstructions = self.accessibilityInstructions;
     step.captureRaw = self.captureRaw;
+    step.devicePosition = self.devicePosition;
     return step;
 }
 
@@ -95,7 +99,8 @@
                         && UIEdgeInsetsEqualToEdgeInsets(self.templateImageInsets, castObject.templateImageInsets)
                         && ORKEqualObjects(self.accessibilityHint, castObject.accessibilityHint)
                         && ORKEqualObjects(self.accessibilityInstructions, castObject.accessibilityInstructions)
-                        && self.captureRaw == castObject.captureRaw;
+                        && self.captureRaw == castObject.captureRaw
+                        && (self.devicePosition == castObject.devicePosition);
 }
 
 @end
