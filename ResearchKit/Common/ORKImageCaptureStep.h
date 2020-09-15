@@ -31,6 +31,7 @@
 
 @import UIKit;
 #import <ResearchKit/ORKStep.h>
+#import <AVFoundation/AVFoundation.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -95,6 +96,14 @@ ORK_CLASS_AVAILABLE
  display preview using HEIC or JPEG. RAW format will only be captured if the device supports it.
  */
 @property (nonatomic, assign) BOOL captureRaw;
+
+/**
+ Constants indicating the physical position of an AVCaptureDevice's hardware on the system.
+ 
+ The default value is `AVCaptureDevicePositionBack` (see `AVCaptureDevicePosition`).
+ If `AVCaptureDevicePositionUnspecified` is set, then it defaults to `AVCaptureDevicePositionBack`.
+ */
+@property (nonatomic) AVCaptureDevicePosition devicePosition;
 
 @end
 

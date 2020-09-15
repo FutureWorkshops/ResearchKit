@@ -298,7 +298,7 @@
     _captureSession.sessionPreset = AVCaptureSessionPresetPhoto;
     _captureRaw = [self imageCaptureStep].captureRaw;
     // Get the camera
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:_imageCaptureView.imageCaptureStep.devicePosition ? : AVCaptureDevicePositionBack];
     if (device) {
         // Configure the input and output
         AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
