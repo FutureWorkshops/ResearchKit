@@ -1963,5 +1963,15 @@ ORK_CLASS_AVAILABLE
 
 @end
 
+/**
+ Defers to the supplied formatter to format the text.
+*/
+ORK_CLASS_AVAILABLE
+@interface ORKCurrencyAnswerFormat : ORKAnswerFormat
+
+- (instancetype)initWithCurrencyFormatter:(nonnull CurrencyFormatter *)formatter;
+
+@end
+
 
 NS_ASSUME_NONNULL_END

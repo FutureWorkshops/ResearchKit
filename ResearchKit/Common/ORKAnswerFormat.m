@@ -3233,3 +3233,35 @@ static NSString *const kSecureTextEntryEscapeString = @"*";
 }
 
 @end
+
+
+#pragma mark ORKCurrencyAnswerFormat
+
+@implementation ORKCurrencyAnswerFormat {
+    NSNumberFormatter *_currencyFormatter;
+}
+
+- (instancetype)initWithLocale:(NSLocale *)locale
+                  currencyCode:(NSString *)currencyCode
+                currencySymbol:(NSString *)currencySymbol
+                      minValue:(NSNumber *)minValue
+                      maxValue:(NSNumber *)maxValue
+                 decimalDigits:(NSNumber *)decimalDigits
+
+{
+    self = [super init];
+    if (self) {
+        _currencyFormatter = formatter;
+    }
+    return self;
+}
+
+- (ORKQuestionType)questionType {
+    return ORKQuestionTypeSES;
+}
+
+- (Class)questionResultClass {
+    return [ORKSESQuestionResult class];
+}
+
+@end
