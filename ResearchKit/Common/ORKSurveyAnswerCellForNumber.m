@@ -69,9 +69,15 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
     return _textFieldView.textField;
 }
 
+- (NSNumberFormatter *)numberFormatter {
+    if (!_numberFormatter) {
+        _numberFormatter = ORKDecimalNumberFormatter();
+    }
+    return _numberFormatter;
+}
+
 - (void)numberCell_initialize {
     ORKQuestionType questionType = self.step.questionType;
-    _numberFormatter = ORKDecimalNumberFormatter();
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localeDidChange:) name:NSCurrentLocaleDidChangeNotification object:nil];
    
     _dontKnowButtonActive = NO;
@@ -138,7 +144,7 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
 
 - (void)localeDidChange:(NSNotification *)note {
     // On a locale change, re-format the value with the current locale
-    _numberFormatter.locale = [NSLocale currentLocale];
+    self.numberFormatter.locale = [NSLocale currentLocale];
     [self answerDidChange];
 }
 
@@ -234,7 +240,7 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
     if (_defaultNumericAnswer) {
         [self ork_setAnswer:_defaultNumericAnswer];
         if (self.textField) {
-            self.textField.text = [_numberFormatter stringFromNumber:_defaultNumericAnswer];
+            self.textField.text = [self.numberFormatter stringFromNumber:_defaultNumericAnswer];
         }
     }
 }
@@ -261,7 +267,7 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
         else {
             NSString *displayValue = answer;
             if ([answer isKindOfClass:[NSNumber class]]) {
-                displayValue = [_numberFormatter stringFromNumber:answer];
+                displayValue = [self.numberFormatter stringFromNumber:answer];
             }
             self.textField.text = displayValue;
         }
@@ -302,7 +308,7 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
 
 - (void)valueFieldDidChange:(UITextField *)textField {
     ORKNumericAnswerFormat *answerFormat = (ORKNumericAnswerFormat *)[self.step impliedAnswerFormat];
-    NSString *sanitizedText = [answerFormat sanitizedTextFieldText:[textField text] decimalSeparator:[_numberFormatter decimalSeparator]];
+    NSString *sanitizedText = [answerFormat sanitizedTextFieldText:[textField text] decimalSeparator:[self.numberFormatter decimalSeparator]];
     textField.text = sanitizedText;
     [self setAnswerWithText:textField.text];
     

@@ -1974,6 +1974,7 @@ ORK_CLASS_AVAILABLE
 
 @property (nonatomic, readonly) NSString *localeIdentifier;
 @property (nonatomic, readonly) NSString *currencyCode;
+@property (nonatomic, readonly) NSNumberFormatter *currencyFormatter;
 
 @end
 

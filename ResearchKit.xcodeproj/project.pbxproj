@@ -94,6 +94,8 @@
 		2E80C1AA1FA2AA8D00399A0C /* ORKStreamingAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E80C1A91FA2AA8D00399A0C /* ORKStreamingAudioRecorder.m */; };
 		2EBFE11D1AE1B32D00CB8254 /* ORKUIViewAccessibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBFE11C1AE1B32D00CB8254 /* ORKUIViewAccessibilityTests.m */; };
 		2EBFE1201AE1B74100CB8254 /* ORKVoiceEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBFE11F1AE1B74100CB8254 /* ORKVoiceEngineTests.m */; };
+		36F599AD2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.h in Headers */ = {isa = PBXBuildFile; fileRef = 36F599AB2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.h */; };
+		36F599AE2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 36F599AC2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.m */; };
 		511987C3246330CA004FC2C7 /* ORKRequestPermissionsStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 511987C1246330CA004FC2C7 /* ORKRequestPermissionsStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		511987C4246330CA004FC2C7 /* ORKRequestPermissionsStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 511987C2246330CA004FC2C7 /* ORKRequestPermissionsStep.m */; };
 		511987C72463316E004FC2C7 /* ORKRequestPermissionsStepViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 511987C52463316E004FC2C7 /* ORKRequestPermissionsStepViewController.h */; };
@@ -702,6 +704,8 @@
 		2EBFE11C1AE1B32D00CB8254 /* ORKUIViewAccessibilityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKUIViewAccessibilityTests.m; sourceTree = "<group>"; };
 		2EBFE11E1AE1B68800CB8254 /* ORKVoiceEngine_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKVoiceEngine_Internal.h; sourceTree = "<group>"; };
 		2EBFE11F1AE1B74100CB8254 /* ORKVoiceEngineTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKVoiceEngineTests.m; sourceTree = "<group>"; };
+		36F599AB2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKSurveyAnswerCellForCurrency.h; sourceTree = "<group>"; };
+		36F599AC2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKSurveyAnswerCellForCurrency.m; sourceTree = "<group>"; };
 		511987C1246330CA004FC2C7 /* ORKRequestPermissionsStep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKRequestPermissionsStep.h; sourceTree = "<group>"; };
 		511987C2246330CA004FC2C7 /* ORKRequestPermissionsStep.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKRequestPermissionsStep.m; sourceTree = "<group>"; };
 		511987C52463316E004FC2C7 /* ORKRequestPermissionsStepViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKRequestPermissionsStepViewController.h; sourceTree = "<group>"; };
@@ -2026,6 +2030,8 @@
 				CBD34A591BB207FC00F204EA /* ORKSurveyAnswerCellForLocation.m */,
 				BAC2B65522F252F70079304E /* ORKSurveyAnswerCellForSES.h */,
 				BAC2B65622F252F70079304E /* ORKSurveyAnswerCellForSES.m */,
+				36F599AB2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.h */,
+				36F599AC2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.m */,
 			);
 			name = "Question Step Views";
 			sourceTree = "<group>";
@@ -2647,6 +2653,7 @@
 				BF91559C1BDE8D7D007FA459 /* ORKReviewStep.h in Headers */,
 				BC13CE391B0660220044153C /* ORKNavigableOrderedTask.h in Headers */,
 				86C40C921A8D7C5C00081FAC /* ORKAudioRecorder.h in Headers */,
+				36F599AD2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.h in Headers */,
 				BCB6E65B1B7D534C000D5B34 /* ORKDiscreteGraphChartView.h in Headers */,
 				86C40D8E1A8D7C5C00081FAC /* ORKStep.h in Headers */,
 				511987C72463316E004FC2C7 /* ORKRequestPermissionsStepViewController.h in Headers */,
@@ -3196,6 +3203,7 @@
 				86C40D8C1A8D7C5C00081FAC /* ORKSkin.m in Sources */,
 				86C40D221A8D7C5C00081FAC /* ORKFormStep.m in Sources */,
 				86C40CD61A8D7C5C00081FAC /* ORKTableContainerView.m in Sources */,
+				36F599AE2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.m in Sources */,
 				2429D5731BBB5397003A512F /* ORKRegistrationStep.m in Sources */,
 				BAC2B65822F252F70079304E /* ORKSurveyAnswerCellForSES.m in Sources */,
 				2489F7B61D65214D008DEF20 /* ORKVideoCaptureView.m in Sources */,
