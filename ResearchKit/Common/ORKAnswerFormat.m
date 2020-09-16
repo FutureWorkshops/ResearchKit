@@ -3246,20 +3246,12 @@ static NSString *const kSecureTextEntryEscapeString = @"*";
 
 - (instancetype)initWithLocaleIdentifier:(NSString *)localeIdentifier
                             currencyCode:(NSString *)currencyCode {
-    self = [super init];
+    self = [super initWithStyle:ORKNumericAnswerStyleDecimal];
     if (self) {
         _localeIdentifier = localeIdentifier;
         _currencyCode = currencyCode;
     }
     return self;
-}
-
-- (ORKQuestionType)questionType {
-    return ORKQuestionTypeCurrency;
-}
-
-- (Class)questionResultClass {
-    return [ORKNumericQuestionResult class];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
@@ -3277,8 +3269,31 @@ static NSString *const kSecureTextEntryEscapeString = @"*";
     ORK_ENCODE_OBJ(aCoder, currencyCode);
 }
 
+- (instancetype)copyWithZone:(NSZone *)zone {
+    ORKCurrencyAnswerFormat *answerFormat = [[[self class] allocWithZone:zone] initWithLocaleIdentifier:_localeIdentifier
+                                                                                           currencyCode:_currencyCode];
+    return answerFormat;
+}
+
+- (BOOL)isEqual:(id)object {
+    BOOL isParentSame = [super isEqual:object];
+    
+    __typeof(self) castObject = object;
+    return (isParentSame &&
+            ORKEqualObjects(self.localeIdentifier, castObject.localeIdentifier) &&
+            ORKEqualObjects(self.currencyCode, castObject.currencyCode));
+}
+
 + (BOOL)supportsSecureCoding {
     return YES;
+}
+
+- (ORKQuestionType)questionType {
+    return ORKQuestionTypeCurrency;
+}
+
+- (Class)questionResultClass {
+    return [ORKNumericQuestionResult class];
 }
 
 - (NSNumberFormatter *)currencyFormatter {
@@ -3295,12 +3310,25 @@ static NSString *const kSecureTextEntryEscapeString = @"*";
     return _currencyFormatter;
 }
 
+- (BOOL)isAnswerValidWithString:(NSString *)text {
+    BOOL isValid = NO;
+    if (text.length > 0) {
+        NSNumber *number = [self.currencyFormatter numberFromString:text];
+        isValid = [self isAnswerValidWithNumber:number];
+    }
+    return isValid;
+}
+
 - (NSString *)localizedStringForNumber:(NSNumber *)number {
     return [self.currencyFormatter stringFromNumber:number];
 }
 
 - (NSString *)stringForAnswer:(id)answer {
-    return [self localizedStringForNumber:answer];
+    NSString *answerString = nil;
+    if ([self isAnswerValid:answer]) {
+        answerString = [self localizedStringForNumber:answer];
+    }
+    return answerString;
 }
 
 - (BOOL)shouldShowDontKnowButton {

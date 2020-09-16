@@ -1967,10 +1967,13 @@ ORK_CLASS_AVAILABLE
  Defers to the supplied formatter to format the text.
 */
 ORK_CLASS_AVAILABLE
-@interface ORKCurrencyAnswerFormat : ORKAnswerFormat
+@interface ORKCurrencyAnswerFormat : ORKNumericAnswerFormat
 
 - (instancetype)initWithLocaleIdentifier:(nullable NSString *)localeIdentifier
                             currencyCode:(nullable NSString *)currencyCode;
+
+@property (nonatomic, readonly) NSString *localeIdentifier;
+@property (nonatomic, readonly) NSString *currencyCode;
 
 @end
 

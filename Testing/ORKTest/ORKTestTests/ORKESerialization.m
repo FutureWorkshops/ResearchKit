@@ -1792,7 +1792,7 @@ static NSMutableDictionary<NSString *, ORKESerializableTableEntry *> *ORKESerial
            ENTRY(ORKCurrencyAnswerFormat,
                  ^id(__unused NSDictionary *dict, __unused ORKESerializationPropertyGetter getter) {
                return [[ORKCurrencyAnswerFormat alloc] initWithLocaleIdentifier:GETPROP(dict, localeIdentifier)
-                                                                                GETPROP(dict, currencyCode)];
+                                                                   currencyCode:GETPROP(dict, currencyCode)];
            },
                  (@{
                      PROPERTY(localeIdentifier, NSString, NSObject, NO, nil, nil),
