@@ -52,7 +52,7 @@
     self = [super init];
     if (self) {
         _previewLayer = [[AVCaptureVideoPreviewLayer alloc] init];
-        _previewLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+        _previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         _previewLayer.needsDisplayOnBoundsChange = YES;
         [self.layer addSublayer:_previewLayer];
         
