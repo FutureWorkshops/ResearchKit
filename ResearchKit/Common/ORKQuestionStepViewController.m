@@ -693,7 +693,8 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
                                @(ORKQuestionTypeMultiplePicker) : [ORKSurveyAnswerCellForPicker class],
                                @(ORKQuestionTypeInteger): [ORKSurveyAnswerCellForNumber class],
                                @(ORKQuestionTypeLocation): [ORKSurveyAnswerCellForLocation class],
-                               @(ORKQuestionTypeSES): [ORKSurveyAnswerCellForSES class]};
+                               @(ORKQuestionTypeSES): [ORKSurveyAnswerCellForSES class],
+                               @(ORKQuestionTypeCurrency): [ORKSurveyAnswerCellForNumber class]};
     });
     
     // SingleSelectionPicker Cell && Other Cells
