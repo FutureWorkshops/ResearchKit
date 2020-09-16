@@ -85,7 +85,7 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
     textField.delegate = self;
     textField.allowsSelection = YES;
     
-    if (questionType == ORKQuestionTypeDecimal) {
+    if (questionType == ORKQuestionTypeDecimal || questionType == ORKQuestionTypeCurrency) {
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     } else if (questionType == ORKQuestionTypeInteger) {
         textField.keyboardType = UIKeyboardTypeNumberPad;
