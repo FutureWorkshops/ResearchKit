@@ -78,6 +78,7 @@ NSString *ORKQuestionTypeString(ORKQuestionType questionType) {
             SQT_CASE(Weight);
             SQT_CASE(Location);
             SQT_CASE(SES);
+            SQT_CASE(Currency);
     }
 #undef SQT_CASE
 }
@@ -3238,30 +3239,72 @@ static NSString *const kSecureTextEntryEscapeString = @"*";
 #pragma mark ORKCurrencyAnswerFormat
 
 @implementation ORKCurrencyAnswerFormat {
+    NSString *_localeIdentifier;
+    NSString *_currencyCode;
     NSNumberFormatter *_currencyFormatter;
 }
 
-- (instancetype)initWithLocale:(NSLocale *)locale
-                  currencyCode:(NSString *)currencyCode
-                currencySymbol:(NSString *)currencySymbol
-                      minValue:(NSNumber *)minValue
-                      maxValue:(NSNumber *)maxValue
-                 decimalDigits:(NSNumber *)decimalDigits
-
-{
+- (instancetype)initWithLocaleIdentifier:(NSString *)localeIdentifier
+                            currencyCode:(NSString *)currencyCode {
     self = [super init];
     if (self) {
-        _currencyFormatter = formatter;
+        _localeIdentifier = localeIdentifier;
+        _currencyCode = currencyCode;
     }
     return self;
 }
 
 - (ORKQuestionType)questionType {
-    return ORKQuestionTypeSES;
+    return ORKQuestionTypeCurrency;
 }
 
 - (Class)questionResultClass {
-    return [ORKSESQuestionResult class];
+    return [ORKNumericQuestionResult class];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        ORK_DECODE_OBJ_CLASS(aDecoder, localeIdentifier, NSString);
+        ORK_DECODE_OBJ_CLASS(aDecoder, currencyCode, NSString);
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [super encodeWithCoder:aCoder];
+    ORK_ENCODE_OBJ(aCoder, localeIdentifier);
+    ORK_ENCODE_OBJ(aCoder, currencyCode);
+}
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+- (NSNumberFormatter *)currencyFormatter {
+    if (!_currencyFormatter) {
+        _currencyFormatter = [[NSNumberFormatter alloc] init];
+        _currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        _currencyFormatter.currencyCode = _currencyCode;
+        if (_localeIdentifier != nil) {
+            _currencyFormatter.locale = [NSLocale localeWithLocaleIdentifier:_localeIdentifier];
+        } else {
+            _currencyFormatter.locale = [NSLocale autoupdatingCurrentLocale];
+        }
+    }
+    return _currencyFormatter;
+}
+
+- (NSString *)localizedStringForNumber:(NSNumber *)number {
+    return [self.currencyFormatter stringFromNumber:number];
+}
+
+- (NSString *)stringForAnswer:(id)answer {
+    return [self localizedStringForNumber:answer];
+}
+
+- (BOOL)shouldShowDontKnowButton {
+    return NO;
 }
 
 @end

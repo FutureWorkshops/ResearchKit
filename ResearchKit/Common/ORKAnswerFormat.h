@@ -1969,7 +1969,8 @@ ORK_CLASS_AVAILABLE
 ORK_CLASS_AVAILABLE
 @interface ORKCurrencyAnswerFormat : ORKAnswerFormat
 
-- (instancetype)initWithCurrencyFormatter:(nonnull CurrencyFormatter *)formatter;
+- (instancetype)initWithLocaleIdentifier:(nullable NSString *)localeIdentifier
+                            currencyCode:(nullable NSString *)currencyCode;
 
 @end
 
