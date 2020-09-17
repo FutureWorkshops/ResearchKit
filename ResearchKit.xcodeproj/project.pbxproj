@@ -96,6 +96,13 @@
 		2EBFE1201AE1B74100CB8254 /* ORKVoiceEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBFE11F1AE1B74100CB8254 /* ORKVoiceEngineTests.m */; };
 		36F599AD2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.h in Headers */ = {isa = PBXBuildFile; fileRef = 36F599AB2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.h */; };
 		36F599AE2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 36F599AC2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.m */; };
+		36F599C1251363EE0079BD70 /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F599B9251363EE0079BD70 /* NumberFormatter.swift */; };
+		36F599C2251363EE0079BD70 /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F599BA251363EE0079BD70 /* CurrencyFormatter.swift */; };
+		36F599C3251363EE0079BD70 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F599BB251363EE0079BD70 /* Currency.swift */; };
+		36F599C4251363EE0079BD70 /* CurrencyLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F599BC251363EE0079BD70 /* CurrencyLocale.swift */; };
+		36F599C5251363EE0079BD70 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F599BD251363EE0079BD70 /* String.swift */; };
+		36F599C6251363EE0079BD70 /* CurrencyUITextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F599BF251363EE0079BD70 /* CurrencyUITextFieldDelegate.swift */; };
+		36F599C7251363EE0079BD70 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F599C0251363EE0079BD70 /* UITextField.swift */; };
 		511987C3246330CA004FC2C7 /* ORKRequestPermissionsStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 511987C1246330CA004FC2C7 /* ORKRequestPermissionsStep.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		511987C4246330CA004FC2C7 /* ORKRequestPermissionsStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 511987C2246330CA004FC2C7 /* ORKRequestPermissionsStep.m */; };
 		511987C72463316E004FC2C7 /* ORKRequestPermissionsStepViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 511987C52463316E004FC2C7 /* ORKRequestPermissionsStepViewController.h */; };
@@ -706,6 +713,13 @@
 		2EBFE11F1AE1B74100CB8254 /* ORKVoiceEngineTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORKVoiceEngineTests.m; sourceTree = "<group>"; };
 		36F599AB2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKSurveyAnswerCellForCurrency.h; sourceTree = "<group>"; };
 		36F599AC2512763E0079BD70 /* ORKSurveyAnswerCellForCurrency.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKSurveyAnswerCellForCurrency.m; sourceTree = "<group>"; };
+		36F599B9251363EE0079BD70 /* NumberFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberFormatter.swift; sourceTree = "<group>"; };
+		36F599BA251363EE0079BD70 /* CurrencyFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyFormatter.swift; sourceTree = "<group>"; };
+		36F599BB251363EE0079BD70 /* Currency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		36F599BC251363EE0079BD70 /* CurrencyLocale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyLocale.swift; sourceTree = "<group>"; };
+		36F599BD251363EE0079BD70 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		36F599BF251363EE0079BD70 /* CurrencyUITextFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyUITextFieldDelegate.swift; sourceTree = "<group>"; };
+		36F599C0251363EE0079BD70 /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		511987C1246330CA004FC2C7 /* ORKRequestPermissionsStep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKRequestPermissionsStep.h; sourceTree = "<group>"; };
 		511987C2246330CA004FC2C7 /* ORKRequestPermissionsStep.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORKRequestPermissionsStep.m; sourceTree = "<group>"; };
 		511987C52463316E004FC2C7 /* ORKRequestPermissionsStepViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORKRequestPermissionsStepViewController.h; sourceTree = "<group>"; };
@@ -1479,6 +1493,36 @@
 			name = Components;
 			sourceTree = "<group>";
 		};
+		36F599B7251363AF0079BD70 /* Currency Formatter */ = {
+			isa = PBXGroup;
+			children = (
+				36F599B8251363EE0079BD70 /* Formatter */,
+				36F599BE251363EE0079BD70 /* UITextFieldDelegate */,
+			);
+			name = "Currency Formatter";
+			sourceTree = "<group>";
+		};
+		36F599B8251363EE0079BD70 /* Formatter */ = {
+			isa = PBXGroup;
+			children = (
+				36F599B9251363EE0079BD70 /* NumberFormatter.swift */,
+				36F599BA251363EE0079BD70 /* CurrencyFormatter.swift */,
+				36F599BB251363EE0079BD70 /* Currency.swift */,
+				36F599BC251363EE0079BD70 /* CurrencyLocale.swift */,
+				36F599BD251363EE0079BD70 /* String.swift */,
+			);
+			path = Formatter;
+			sourceTree = "<group>";
+		};
+		36F599BE251363EE0079BD70 /* UITextFieldDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				36F599BF251363EE0079BD70 /* CurrencyUITextFieldDelegate.swift */,
+				36F599C0251363EE0079BD70 /* UITextField.swift */,
+			);
+			path = UITextFieldDelegate;
+			sourceTree = "<group>";
+		};
 		3FFF18341829DB1D00167070 = {
 			isa = PBXGroup;
 			children = (
@@ -1955,6 +1999,7 @@
 		B12EFF3B1AB211E000A80147 /* Answer Format */ = {
 			isa = PBXGroup;
 			children = (
+				36F599B7251363AF0079BD70 /* Currency Formatter */,
 				B12EFF421AB2134100A80147 /* Choice Format Helpers */,
 				B12EFF411AB212E100A80147 /* Control Views */,
 				B12EFF3E1AB2123000A80147 /* Form Step Views */,
@@ -3230,6 +3275,7 @@
 				86C40CBE1A8D7C5C00081FAC /* UITouch+ORKJSONDictionary.m in Sources */,
 				618DA0521A93D0D600E63AA8 /* ORKAccessibilityFunctions.m in Sources */,
 				BF9155AC1BDE8DA9007FA459 /* ORKWaitStepViewController.m in Sources */,
+				36F599C2251363EE0079BD70 /* CurrencyFormatter.swift in Sources */,
 				86C40DB81A8D7C5C00081FAC /* ORKSurveyAnswerCellForText.m in Sources */,
 				511987C4246330CA004FC2C7 /* ORKRequestPermissionsStep.m in Sources */,
 				BA8C067022ECF87900ACDE6B /* ORKSecondaryTaskStepViewController.m in Sources */,
@@ -3264,6 +3310,7 @@
 				10BAA2CB1B5FCB4F004FE478 /* ORKProgressView.m in Sources */,
 				86C40D861A8D7C5C00081FAC /* ORKSelectionTitleLabel.m in Sources */,
 				FF36A49E1D1A15FC00DE8470 /* ORKTableStepViewController.m in Sources */,
+				36F599C5251363EE0079BD70 /* String.swift in Sources */,
 				86C40D001A8D7C5C00081FAC /* ORKChoiceViewCell.m in Sources */,
 				51E03D6424919711008F8406 /* ORKPermissionType.m in Sources */,
 				86C40D9E1A8D7C5C00081FAC /* ORKSubheadlineLabel.m in Sources */,
@@ -3310,6 +3357,7 @@
 				86C40E001A8D7C5C00081FAC /* ORKConsentDocument.m in Sources */,
 				D442397A1AF17F5100559D96 /* ORKImageCaptureStep.m in Sources */,
 				86C40CDE1A8D7C5C00081FAC /* ORKTintedImageView.m in Sources */,
+				36F599C1251363EE0079BD70 /* NumberFormatter.swift in Sources */,
 				86B781BC1AA668ED00688151 /* ORKTimeIntervalPicker.m in Sources */,
 				86B781BE1AA668ED00688151 /* ORKValuePicker.m in Sources */,
 				86B89ABC1AB3BECC001626A4 /* ORKStepHeaderView.m in Sources */,
@@ -3325,6 +3373,7 @@
 				86C40C8A1A8D7C5C00081FAC /* ORKActiveStepTimerView.m in Sources */,
 				86AD91111AB7B8A600361FEB /* ORKActiveStepView.m in Sources */,
 				51BF30BF247B330A00E2E669 /* ORKIconButton.m in Sources */,
+				36F599C6251363EE0079BD70 /* CurrencyUITextFieldDelegate.swift in Sources */,
 				86C40D081A8D7C5C00081FAC /* ORKCountdownLabel.m in Sources */,
 				86C40E121A8D7C5C00081FAC /* ORKConsentSceneViewController.m in Sources */,
 				D442397E1AF17F7600559D96 /* ORKImageCaptureStepViewController.m in Sources */,
@@ -3334,6 +3383,7 @@
 				51751468245A53D7009E8FFC /* ORKFrontFacingCameraStepContentView.m in Sources */,
 				86C40D6C1A8D7C5C00081FAC /* ORKResult.m in Sources */,
 				BA87E26E20A79FA100B375A9 /* ORKRingView.m in Sources */,
+				36F599C3251363EE0079BD70 /* Currency.swift in Sources */,
 				86C40CD21A8D7C5C00081FAC /* ORKInstructionStepView.m in Sources */,
 				10FF9AD81B7A045E00ECB5B4 /* ORKSeparatorView.m in Sources */,
 				86C40D181A8D7C5C00081FAC /* ORKErrors.m in Sources */,
@@ -3367,6 +3417,7 @@
 				FF5E3CCC1D23444400ECE4B7 /* ORKPageStepViewController.m in Sources */,
 				BA473FE4224DAFEF00A362E3 /* ORKBodyContainerView.m in Sources */,
 				BAD6FAB22332A2FD006647E7 /* ORKCheckmarkView.m in Sources */,
+				36F599C7251363EE0079BD70 /* UITextField.swift in Sources */,
 				86C40E0E1A8D7C5C00081FAC /* ORKConsentReviewStepViewController.m in Sources */,
 				BF9155A01BDE8D7E007FA459 /* ORKReviewStepViewController.m in Sources */,
 				2E80C1AA1FA2AA8D00399A0C /* ORKStreamingAudioRecorder.m in Sources */,
@@ -3418,6 +3469,7 @@
 				86C40D581A8D7C5C00081FAC /* ORKOrderedTask.m in Sources */,
 				86C40D601A8D7C5C00081FAC /* ORKQuestionStep.m in Sources */,
 				86C40E381A8D7C5C00081FAC /* ORKVisualConsentTransitionAnimator.m in Sources */,
+				36F599C4251363EE0079BD70 /* CurrencyLocale.swift in Sources */,
 				BCB6E64B1B7D531C000D5B34 /* ORKPieChartView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

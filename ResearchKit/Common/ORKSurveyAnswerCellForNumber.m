@@ -69,11 +69,18 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
     return _textFieldView.textField;
 }
 
-- (NSNumberFormatter *)numberFormatter {
-    if (!_numberFormatter) {
-        _numberFormatter = ORKDecimalNumberFormatter();
-    }
-    return _numberFormatter;
+- (nullable NSString *)stringFromNumber:(NSNumber *)number {
+    return [_numberFormatter stringFromNumber:number];
+}
+
+- (nullable NSNumber *)numberFromString:(NSString *)string {
+    return [_numberFormatter numberFromString:string];
+}
+
+- (nullable NSString *)sanitizedText:(NSString *)text {
+    ORKNumericAnswerFormat *answerFormat = (ORKNumericAnswerFormat *)[self.step impliedAnswerFormat];
+    NSString *sanitizedText = [answerFormat sanitizedTextFieldText:text decimalSeparator:[_numberFormatter decimalSeparator]];
+    return sanitizedText;
 }
 
 - (void)numberCell_initialize {
@@ -144,7 +151,7 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
 
 - (void)localeDidChange:(NSNotification *)note {
     // On a locale change, re-format the value with the current locale
-    self.numberFormatter.locale = [NSLocale currentLocale];
+    _numberFormatter.locale = [NSLocale currentLocale];
     [self answerDidChange];
 }
 
@@ -240,7 +247,7 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
     if (_defaultNumericAnswer) {
         [self ork_setAnswer:_defaultNumericAnswer];
         if (self.textField) {
-            self.textField.text = [self.numberFormatter stringFromNumber:_defaultNumericAnswer];
+            self.textField.text = [self stringFromNumber:_defaultNumericAnswer];
         }
     }
 }
@@ -267,7 +274,7 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
         else {
             NSString *displayValue = answer;
             if ([answer isKindOfClass:[NSNumber class]]) {
-                displayValue = [self.numberFormatter stringFromNumber:answer];
+                displayValue = [self stringFromNumber:answer];
             }
             self.textField.text = displayValue;
         }
@@ -307,9 +314,7 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
 #pragma mark - UITextFieldDelegate
 
 - (void)valueFieldDidChange:(UITextField *)textField {
-    ORKNumericAnswerFormat *answerFormat = (ORKNumericAnswerFormat *)[self.step impliedAnswerFormat];
-    NSString *sanitizedText = [answerFormat sanitizedTextFieldText:[textField text] decimalSeparator:[self.numberFormatter decimalSeparator]];
-    textField.text = sanitizedText;
+    textField.text = [self sanitizedText:textField.text];
     [self setAnswerWithText:textField.text];
     
     BOOL isValid = [self isAnswerValid];

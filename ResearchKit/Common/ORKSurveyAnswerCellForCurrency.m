@@ -31,17 +31,62 @@
 
 #import "ORKSurveyAnswerCellForCurrency.h"
 
+#import "ORKTextFieldView.h"
+#import "ORKDontKnowButton.h"
+
 #import "ORKAnswerFormat_Internal.h"
 #import "ORKQuestionStep_Internal.h"
 
-@implementation ORKSurveyAnswerCellForCurrency
+#import "ORKHelpers_Internal.h"
 
-- (NSNumberFormatter *)numberFormatter {
+#import <ResearchKit/ResearchKit-Swift.h>
+
+@implementation ORKSurveyAnswerCellForCurrency {
+    CurrencyFormatter *_currencyFormatter;
+    CurrencyUITextFieldDelegate *_currencyUITextFieldDelegate;
+}
+
+- (ORKUnitTextField *)textField {
+    return self.textFieldView.textField;
+}
+
+- (nullable NSString *)stringFromNumber:(NSNumber *)number {
+    return [_currencyFormatter stringFrom:number.doubleValue];
+}
+
+- (nullable NSNumber *)numberFromString:(NSString *)string {
+    return [_currencyFormatter doubleAsNSNumberFrom:string];
+}
+
+- (nullable NSString *)sanitizedText:(NSString *)text {
+    return text;
+}
+
+- (void)numberCell_initialize {
+    [super numberCell_initialize];
+    
     ORKCurrencyAnswerFormat *currencyAnswerFormat = (ORKCurrencyAnswerFormat *)self.step.answerFormat;
-    if (currencyAnswerFormat.currencyFormatter != nil) {
-        return currencyAnswerFormat.currencyFormatter;
-    } else {
-        return [super numberFormatter];
+    
+    _currencyFormatter = currencyAnswerFormat.currencyFormatter;
+    _currencyUITextFieldDelegate = [[CurrencyUITextFieldDelegate alloc] initWithFormatter:currencyAnswerFormat.currencyFormatter];
+    
+    self.textField.delegate = _currencyUITextFieldDelegate;
+}
+
+- (void)setAnswerWithText:(NSString *)text {
+    BOOL updateInput = NO;
+    id answer = ORKNullAnswerValue();
+    if (text.length) {
+        answer = [_currencyFormatter unformattedWithString:text];
+        if (!answer) {
+            answer = ORKNullAnswerValue();
+            updateInput = YES;
+        }
+    }
+    
+    [self ork_setAnswer:answer];
+    if (updateInput) {
+        [self answerDidChange];
     }
 }
 

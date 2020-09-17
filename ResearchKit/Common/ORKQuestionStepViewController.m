@@ -43,6 +43,7 @@
 #import "ORKSurveyAnswerCellForImageSelection.h"
 #import "ORKSurveyAnswerCellForLocation.h"
 #import "ORKSurveyAnswerCellForSES.h"
+#import "ORKSurveyAnswerCellForCurrency.h"
 #import "ORKTableContainerView.h"
 #import "ORKSurveyCardHeaderView.h"
 #import "ORKTextChoiceCellGroup.h"
@@ -694,7 +695,7 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
                                @(ORKQuestionTypeInteger): [ORKSurveyAnswerCellForNumber class],
                                @(ORKQuestionTypeLocation): [ORKSurveyAnswerCellForLocation class],
                                @(ORKQuestionTypeSES): [ORKSurveyAnswerCellForSES class],
-                               @(ORKQuestionTypeCurrency): [ORKSurveyAnswerCellForNumber class]};
+                               @(ORKQuestionTypeCurrency): [ORKSurveyAnswerCellForCurrency class]};
     });
     
     // SingleSelectionPicker Cell && Other Cells
@@ -855,9 +856,11 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
         }
             break;
         case ORKQuestionTypeInteger:
-        case ORKQuestionTypeDecimal:
-        case ORKQuestionTypeCurrency:{
+        case ORKQuestionTypeDecimal:{
             height = [ORKSurveyAnswerCellForNumber suggestedCellHeightForView:tableView];
+        }
+        case ORKQuestionTypeCurrency:{
+            height = [ORKSurveyAnswerCellForCurrency suggestedCellHeightForView:tableView];
         }
             break;
         case ORKQuestionTypeText:{

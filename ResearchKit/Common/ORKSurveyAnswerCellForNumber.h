@@ -35,9 +35,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ORKTextFieldView;
+
 @interface ORKSurveyAnswerCellForNumber : ORKSurveyAnswerCell <UITextFieldDelegate>
 
-@property (nonatomic, nullable, readonly) NSNumberFormatter *numberFormatter;
+@property (nonatomic, nullable, readonly) ORKTextFieldView *textFieldView;
+
+// for subclasses
+- (void)numberCell_initialize;
+- (nullable NSString *)stringFromNumber:(NSNumber *)number;
+- (nullable NSNumber *)numberFromString:(NSString *)string;
+- (nullable NSString *)sanitizedText:(NSString *)text;
 
 @end
 

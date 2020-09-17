@@ -61,6 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class ORKTextChoice;
 @class ORKImageChoice;
 
+@class CurrencyFormatter;
+
 /**
  The `ORKAnswerFormat` class is the abstract base class for classes that describe the
  format in which a survey question or form item should be answered. The ResearchKit framework uses
@@ -1974,7 +1976,7 @@ ORK_CLASS_AVAILABLE
 
 @property (nonatomic, readonly) NSString *localeIdentifier;
 @property (nonatomic, readonly) NSString *currencyCode;
-@property (nonatomic, readonly) NSNumberFormatter *currencyFormatter;
+@property (nonatomic, readonly) CurrencyFormatter *currencyFormatter;
 
 @end
 

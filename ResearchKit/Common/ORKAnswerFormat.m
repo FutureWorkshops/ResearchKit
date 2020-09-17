@@ -36,6 +36,7 @@
 
 #import "ORKAnswerFormat.h"
 #import "ORKAnswerFormat_Internal.h"
+#import <ResearchKit/ResearchKit-Swift.h>
 
 #import "ORKChoiceAnswerFormatHelper.h"
 #import "ORKQuestionResult_Private.h"
@@ -3241,7 +3242,7 @@ static NSString *const kSecureTextEntryEscapeString = @"*";
 @implementation ORKCurrencyAnswerFormat {
     NSString *_localeIdentifier;
     NSString *_currencyCode;
-    NSNumberFormatter *_currencyFormatter;
+    CurrencyFormatter *_currencyFormatter;
 }
 
 - (instancetype)initWithLocaleIdentifier:(NSString *)localeIdentifier
@@ -3296,16 +3297,12 @@ static NSString *const kSecureTextEntryEscapeString = @"*";
     return [ORKNumericQuestionResult class];
 }
 
-- (NSNumberFormatter *)currencyFormatter {
+- (CurrencyFormatter *)currencyFormatter {
     if (!_currencyFormatter) {
-        _currencyFormatter = [[NSNumberFormatter alloc] init];
-        _currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        _currencyFormatter.currencyCode = _currencyCode;
-        if (_localeIdentifier != nil) {
-            _currencyFormatter.locale = [NSLocale localeWithLocaleIdentifier:_localeIdentifier];
-        } else {
-            _currencyFormatter.locale = [NSLocale autoupdatingCurrentLocale];
-        }
+        _currencyFormatter = [[CurrencyFormatter alloc] init:^(CurrencyFormatter * _Nonnull currencyFormatter) {
+            currencyFormatter.nsLocale = [NSLocale localeWithLocaleIdentifier:_localeIdentifier];
+            currencyFormatter.currencyCode = _currencyCode;
+        }];
     }
     return _currencyFormatter;
 }
@@ -3313,14 +3310,14 @@ static NSString *const kSecureTextEntryEscapeString = @"*";
 - (BOOL)isAnswerValidWithString:(NSString *)text {
     BOOL isValid = NO;
     if (text.length > 0) {
-        NSNumber *number = [self.currencyFormatter numberFromString:text];
+        NSNumber *number = [_currencyFormatter doubleAsNSNumberFrom:text];
         isValid = [self isAnswerValidWithNumber:number];
     }
     return isValid;
 }
 
 - (NSString *)localizedStringForNumber:(NSNumber *)number {
-    return [self.currencyFormatter stringFromNumber:number];
+    return [_currencyFormatter stringFrom:number.doubleValue];
 }
 
 - (NSString *)stringForAnswer:(id)answer {
