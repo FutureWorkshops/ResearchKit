@@ -272,7 +272,11 @@ extension CurrencyFormatter {
     /// - Parameter string: string that describes the numerical value.
     /// - Returns: the value as a Double.
     public func double(from string: String) -> Double? {
-        Double(string)
+        if let double = Double(string) {
+            return double
+        } else {
+            return numberFormatter.number(from: string)?.doubleValue
+        }
     }
     
     /// Returns a double (as NSNumber) from a string that represents a numerical value.

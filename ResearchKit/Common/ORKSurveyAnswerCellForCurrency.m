@@ -74,11 +74,17 @@
     self.textField.delegate = _currencyUITextFieldDelegate;
 }
 
+- (void)assignDefaultAnswer {
+    NSNumber *defaultAnswer = @(0.0);
+    [self ork_setAnswer:defaultAnswer];
+    self.textField.text = [self stringFromNumber:defaultAnswer];
+}
+
 - (void)setAnswerWithText:(NSString *)text {
     BOOL updateInput = NO;
     id answer = ORKNullAnswerValue();
     if (text.length) {
-        answer = [_currencyFormatter unformattedWithString:text];
+        answer = [_currencyFormatter doubleAsNSNumberFrom:text];
         if (!answer) {
             answer = ORKNullAnswerValue();
             updateInput = YES;
