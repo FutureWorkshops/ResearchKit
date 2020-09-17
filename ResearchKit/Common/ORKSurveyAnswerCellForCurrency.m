@@ -69,6 +69,7 @@
     
     _currencyFormatter = currencyAnswerFormat.currencyFormatter;
     _currencyUITextFieldDelegate = [[CurrencyUITextFieldDelegate alloc] initWithFormatter:currencyAnswerFormat.currencyFormatter];
+    _currencyUITextFieldDelegate.passthroughDelegate = self;
     
     self.textField.delegate = _currencyUITextFieldDelegate;
 }

@@ -25,7 +25,7 @@ public class CurrencyUITextFieldDelegate: NSObject {
     /// Note: Make sure the implementation of this object does not wrongly interfere with currency formatting.
     ///
     /// By returning `false` on`textField(textField:shouldChangeCharactersIn:replacementString:)` no currency formatting is done.
-    public var passthroughDelegate: UITextFieldDelegate? {
+    @objc public var passthroughDelegate: UITextFieldDelegate? {
         get { return _passthroughDelegate }
         set {
             guard newValue !== self else { return }
