@@ -36,6 +36,7 @@
 
 #import "ORKAnswerFormat.h"
 #import "ORKAnswerFormat_Internal.h"
+#import <ResearchKit/ResearchKit-Swift.h>
 
 #import "ORKChoiceAnswerFormatHelper.h"
 #import "ORKQuestionResult_Private.h"
@@ -78,6 +79,7 @@ NSString *ORKQuestionTypeString(ORKQuestionType questionType) {
             SQT_CASE(Weight);
             SQT_CASE(Location);
             SQT_CASE(SES);
+            SQT_CASE(Currency);
     }
 #undef SQT_CASE
 }
@@ -3226,6 +3228,104 @@ static NSString *const kSecureTextEntryEscapeString = @"*";
 
 - (NSString *)stringForAnswer:(id)answer {
     return [self localizedStringForNumber:answer];
+}
+
+- (BOOL)shouldShowDontKnowButton {
+    return NO;
+}
+
+@end
+
+
+#pragma mark ORKCurrencyAnswerFormat
+
+@implementation ORKCurrencyAnswerFormat {
+    NSString *_localeIdentifier;
+    NSString *_currencyCode;
+    CurrencyFormatter *_currencyFormatter;
+}
+
+- (instancetype)initWithLocaleIdentifier:(NSString *)localeIdentifier
+                            currencyCode:(NSString *)currencyCode {
+    self = [super initWithStyle:ORKNumericAnswerStyleDecimal];
+    if (self) {
+        _localeIdentifier = localeIdentifier;
+        _currencyCode = currencyCode;
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        ORK_DECODE_OBJ_CLASS(aDecoder, localeIdentifier, NSString);
+        ORK_DECODE_OBJ_CLASS(aDecoder, currencyCode, NSString);
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [super encodeWithCoder:aCoder];
+    ORK_ENCODE_OBJ(aCoder, localeIdentifier);
+    ORK_ENCODE_OBJ(aCoder, currencyCode);
+}
+
+- (instancetype)copyWithZone:(NSZone *)zone {
+    ORKCurrencyAnswerFormat *answerFormat = [[[self class] allocWithZone:zone] initWithLocaleIdentifier:_localeIdentifier
+                                                                                           currencyCode:_currencyCode];
+    return answerFormat;
+}
+
+- (BOOL)isEqual:(id)object {
+    BOOL isParentSame = [super isEqual:object];
+    
+    __typeof(self) castObject = object;
+    return (isParentSame &&
+            ORKEqualObjects(self.localeIdentifier, castObject.localeIdentifier) &&
+            ORKEqualObjects(self.currencyCode, castObject.currencyCode));
+}
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+- (ORKQuestionType)questionType {
+    return ORKQuestionTypeCurrency;
+}
+
+- (Class)questionResultClass {
+    return [ORKNumericQuestionResult class];
+}
+
+- (CurrencyFormatter *)currencyFormatter {
+    if (!_currencyFormatter) {
+        _currencyFormatter = [[CurrencyFormatter alloc] init:^(CurrencyFormatter * _Nonnull currencyFormatter) {
+            currencyFormatter.nsLocale = [NSLocale localeWithLocaleIdentifier:_localeIdentifier];
+            currencyFormatter.currencyCode = _currencyCode;
+        }];
+    }
+    return _currencyFormatter;
+}
+
+- (BOOL)isAnswerValidWithString:(NSString *)text {
+    BOOL isValid = NO;
+    if (text.length > 0) {
+        NSNumber *number = [_currencyFormatter doubleAsNSNumberFrom:text];
+        isValid = [self isAnswerValidWithNumber:number];
+    }
+    return isValid;
+}
+
+- (NSString *)localizedStringForNumber:(NSNumber *)number {
+    return [_currencyFormatter stringFrom:number.doubleValue];
+}
+
+- (NSString *)stringForAnswer:(id)answer {
+    NSString *answerString = nil;
+    if ([self isAnswerValid:answer]) {
+        answerString = [self localizedStringForNumber:answer];
+    }
+    return answerString;
 }
 
 - (BOOL)shouldShowDontKnowButton {

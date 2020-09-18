@@ -127,7 +127,12 @@ typedef NS_ENUM(NSInteger, ORKQuestionType) {
     /**
      In a socio-economic ladder, participant can pick their socio economic status.
      */
-    ORKQuestionTypeSES
+    ORKQuestionTypeSES,
+    
+    /**
+     In a currency question, participant can enter a currency amount.
+     */
+    ORKQuestionTypeCurrency
 } ORK_ENUM_AVAILABLE;
 
 

@@ -1789,6 +1789,15 @@ static NSMutableDictionary<NSString *, ORKESerializableTableEntry *> *ORKESerial
                      PROPERTY(topRungText, NSString, NSObject, YES, nil, nil),
                      PROPERTY(bottomRungText, NSString, NSObject, YES, nil, nil)
                  })),
+           ENTRY(ORKCurrencyAnswerFormat,
+                 ^id(__unused NSDictionary *dict, __unused ORKESerializationPropertyGetter getter) {
+               return [[ORKCurrencyAnswerFormat alloc] initWithLocaleIdentifier:GETPROP(dict, localeIdentifier)
+                                                                   currencyCode:GETPROP(dict, currencyCode)];
+           },
+                 (@{
+                     PROPERTY(localeIdentifier, NSString, NSObject, NO, nil, nil),
+                     PROPERTY(currencyCode, NSString, NSObject, NO, nil, nil)
+                 })),
            ENTRY(ORKLocationRecorderConfiguration,
                  ^id(NSDictionary *dict, ORKESerializationPropertyGetter getter) {
                      return [[ORKLocationRecorderConfiguration alloc] initWithIdentifier:GETPROP(dict,identifier)];
