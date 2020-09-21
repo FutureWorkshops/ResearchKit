@@ -95,6 +95,11 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
+@interface ORKFormItemCurrencyCell : ORKFormItemNumericCell
+
+@end
+
+
 @interface ORKFormItemTextCell : ORKFormItemCell <UITextViewDelegate>
 
 @end
