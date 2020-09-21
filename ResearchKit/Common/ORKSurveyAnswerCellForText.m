@@ -659,6 +659,9 @@ static const CGFloat CellBottomPadding = 5.0;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    textField.text = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    [self checkTextAndSetAnswer];
+    
     NSString *text = self.textField.text;
     ORKTextAnswerFormat *answerFormat = (ORKTextAnswerFormat *)[self.step impliedAnswerFormat];
     

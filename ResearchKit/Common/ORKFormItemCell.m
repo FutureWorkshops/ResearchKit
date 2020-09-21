@@ -774,6 +774,8 @@ static const CGFloat InlineFormItemLabelToTextFieldPadding = 10.0;
      postNotificationName:ORKResetDoneButtonKey
      object:self];
     
+    textField.text = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
     if (textField.text.length > 0 && ![[self.formItem impliedAnswerFormat] isAnswerValidWithString:textField.text]) {
         [self updateErrorLabelWithMessage:[[self.formItem impliedAnswerFormat] localizedInvalidValueStringWithAnswerString:@""]];
         return YES;
