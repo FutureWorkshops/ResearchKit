@@ -28,17 +28,14 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ Hacked version by MBS to make this class work with a category
+ */
 
 #import "ORKVideoInstructionStepViewController.h"
-#import "ORKInstructionStepViewController_Internal.h"
-#import "ORKStepViewController_Internal.h"
-#import "ORKInstructionStepView.h"
 #import "ORKVideoInstructionStepResult.h"
 #import "AVFoundation/AVFoundation.h"
 #import <AVKit/AVKit.h>
-#import "ORKHelpers_Internal.h"
-#import "ORKStepContentView.h"
-#import "ORKStepContentView_Private.h"
 
 
 @interface ORKRateObservedPlayer : AVPlayer
@@ -81,23 +78,25 @@
     [super stepDidChange];
     _playbackStoppedTime = NAN;
     _playbackCompleted = NO;
-    
+
     if (self.step && [self isViewLoaded] && [self videoInstructionStep].image) {
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
         [tapRecognizer addTarget:self action:@selector(play)];
-        [self.stepView.stepContentView.topContentImageView addGestureRecognizer:tapRecognizer];
+        [self.stepView addGestureRecognizer:tapRecognizer];
 
-        if (self.stepView.stepContentView.topContentImageView) {
+        if (self.stepView.stepTopContentImage) {
             UIImageView *playImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"play" inBundle:ORKBundle() compatibleWithTraitCollection:nil]];
-            self.stepView.stepContentView.topContentImageView.userInteractionEnabled = YES;
-            [self.stepView.stepContentView.topContentImageView addSubview:playImageView];
+            self.stepView.userInteractionEnabled = YES;
+            [self.stepView addSubview:playImageView];
 
             playImageView.translatesAutoresizingMaskIntoConstraints = NO;
 
-            NSLayoutConstraint* xConstraint = [NSLayoutConstraint constraintWithItem:self.stepView.stepContentView.topContentImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:playImageView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
-            NSLayoutConstraint* yConstraint = [NSLayoutConstraint constraintWithItem:self.stepView.stepContentView.topContentImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:playImageView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];
+            NSLayoutConstraint* xConstraint = [NSLayoutConstraint constraintWithItem:self.stepView.stepContentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:playImageView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
+            
+            CGFloat yOffSet = ORKStepContainerTopContentHeightForWindow(self.view.window)/2 - playImageView.frame.size.height/2;
+            NSLayoutConstraint* yConstraint = [NSLayoutConstraint constraintWithItem:playImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.stepView.stepContentView attribute:NSLayoutAttributeTop multiplier:1 constant:yOffSet];
 
-            [self.stepView.stepContentView.topContentImageView addConstraints:@[xConstraint, yConstraint]];
+            [self.stepView addConstraints:@[xConstraint, yConstraint]];
         }
     }
 }
@@ -110,14 +109,25 @@
         self.videoInstructionStep.image = nil;
         return;
     }
-    AVAsset* asset = [AVAsset assetWithURL:[self videoInstructionStep].videoURL];
-    CMTime duration = [asset duration];
-    duration.value = MIN([self videoInstructionStep].thumbnailTime, duration.value / duration.timescale) * duration.timescale;
-    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-    CGImageRef thumbnailImageRef = [imageGenerator copyCGImageAtTime:duration actualTime:NULL error:NULL];
-    UIImage *thumbnailImage = [UIImage imageWithCGImage:thumbnailImageRef];
-    CGImageRelease(thumbnailImageRef);
-    [self videoInstructionStep].image = thumbnailImage;
+    
+    [self videoInstructionStep].image = [UIImage imageNamed:@"placeholder"];
+
+    ORKWeakTypeOf(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        ORKStrongTypeOf(self) strongSelf = weakSelf;
+        AVAsset* asset = [AVAsset assetWithURL:[strongSelf videoInstructionStep].videoURL];
+        CMTime duration = [asset duration];
+        duration.value = MIN([strongSelf videoInstructionStep].thumbnailTime, duration.value / duration.timescale) * duration.timescale;
+        AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        CGImageRef thumbnailImageRef = [imageGenerator copyCGImageAtTime:duration actualTime:NULL error:NULL];
+        UIImage *thumbnailImage = [UIImage imageWithCGImage:thumbnailImageRef];
+        CGImageRelease(thumbnailImageRef);
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [strongSelf videoInstructionStep].image = thumbnailImage;
+            [strongSelf stepDidChange];
+        });
+    });
 }
 
 - (void)play {
