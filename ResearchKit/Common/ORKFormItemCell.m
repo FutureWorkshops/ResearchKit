@@ -51,6 +51,8 @@
 #import "ORKHelpers_Internal.h"
 #import "ORKSkin.h"
 
+#import <ResearchKit/ResearchKit-Swift.h>
+
 @import MapKit;
 
 
@@ -1013,6 +1015,20 @@ static const CGFloat InlineFormItemLabelToTextFieldPadding = 10.0;
     NSNumber *_defaultNumericAnswer;
 }
 
+- (nullable NSString *)stringFromNumber:(NSNumber *)number {
+    return [_numberFormatter stringFromNumber:number];
+}
+
+- (nullable NSNumber *)numberFromString:(NSString *)string {
+    return [_numberFormatter numberFromString:string];
+}
+
+- (nullable NSString *)sanitizedText:(NSString *)text {
+    ORKNumericAnswerFormat *answerFormat = (ORKNumericAnswerFormat *)[self.formItem impliedAnswerFormat];
+    NSString *sanitizedText = [answerFormat sanitizedTextFieldText:[self.textField text] decimalSeparator:[_numberFormatter decimalSeparator]];
+    return sanitizedText;
+}
+
 - (void)cellInit {
     [super cellInit];
     ORKQuestionType questionType = [self.formItem questionType];
@@ -1038,7 +1054,7 @@ static const CGFloat InlineFormItemLabelToTextFieldPadding = 10.0;
     if (_defaultNumericAnswer) {
         [self ork_setAnswer:_defaultNumericAnswer];
         if (self.textField) {
-            self.textField.text = [_numberFormatter stringFromNumber:_defaultNumericAnswer];
+            self.textField.text = [self stringFromNumber:_defaultNumericAnswer];
         }
     }
 }
@@ -1073,7 +1089,7 @@ static const CGFloat InlineFormItemLabelToTextFieldPadding = 10.0;
         else {
             NSString *displayValue = answer;
             if ([answer isKindOfClass:[NSNumber class]]) {
-                displayValue = [_numberFormatter stringFromNumber:answer];
+                displayValue = [self stringFromNumber:answer];
             }
             self.textField.text = displayValue;
         }
@@ -1102,11 +1118,73 @@ static const CGFloat InlineFormItemLabelToTextFieldPadding = 10.0;
 #pragma mark UITextFieldDelegate
 
 - (void)valueFieldDidChange:(UITextField *)textField {
-    ORKNumericAnswerFormat *answerFormat = (ORKNumericAnswerFormat *)[self.formItem impliedAnswerFormat];
-    NSString *sanitizedText = [answerFormat sanitizedTextFieldText:[textField text] decimalSeparator:[_numberFormatter decimalSeparator]];
-    textField.text = sanitizedText;
+    textField.text = [self sanitizedText:textField.text];
     
     [self inputValueDidChange];
+}
+
+@end
+
+
+#pragma mark - ORKFormItemCurrencyCell
+
+@implementation ORKFormItemCurrencyCell {
+    CurrencyFormatter *_currencyFormatter;
+    CurrencyUITextFieldDelegate *_currencyUITextFieldDelegate;
+}
+
+- (nullable NSString *)stringFromNumber:(NSNumber *)number {
+    return [_currencyFormatter stringFrom:number.doubleValue];
+}
+
+- (nullable NSNumber *)numberFromString:(NSString *)string {
+    return [_currencyFormatter doubleAsNSNumberFrom:string];
+}
+
+- (nullable NSString *)sanitizedText:(NSString *)text {
+    return text;
+}
+
+- (void)cellInit {
+    [super cellInit];
+    
+    ORKCurrencyAnswerFormat *currencyAnswerFormat = (ORKCurrencyAnswerFormat *)self.formItem.answerFormat;
+    
+    _currencyFormatter = currencyAnswerFormat.currencyFormatter;
+    _currencyUITextFieldDelegate = [[CurrencyUITextFieldDelegate alloc] initWithFormatter:currencyAnswerFormat.currencyFormatter];
+    _currencyUITextFieldDelegate.passthroughDelegate = self;
+    
+    self.textField.delegate = _currencyUITextFieldDelegate;
+    
+    [self answerDidChange];
+}
+
+- (void)assignDefaultAnswer {
+    NSNumber *defaultAnswer = @(0.0);
+    [self ork_setAnswer:defaultAnswer];
+    self.textField.text = [self stringFromNumber:defaultAnswer];
+}
+
+- (void)setAnswerWithText:(NSString *)text {
+    BOOL updateInput = NO;
+    id answer = ORKNullAnswerValue();
+    if (text.length) {
+        answer = [_currencyFormatter doubleAsNSNumberFrom:text];
+        if (!answer) {
+            answer = ORKNullAnswerValue();
+            updateInput = YES;
+        }
+    }
+    
+    [self ork_setAnswer:answer];
+    if (updateInput) {
+        [self answerDidChange];
+    }
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    NSString *text = self.textField.text;
+    [self setAnswerWithText:text];
 }
 
 @end

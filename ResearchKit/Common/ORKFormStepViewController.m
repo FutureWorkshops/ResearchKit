@@ -1070,9 +1070,12 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
                 }
                     
                 case ORKQuestionTypeDecimal:
-                case ORKQuestionTypeInteger:
-                case ORKQuestionTypeCurrency: {
+                case ORKQuestionTypeInteger: {
                     class = [ORKFormItemNumericCell class];
+                    break;
+                }
+                case ORKQuestionTypeCurrency: {
+                    class = [ORKFormItemCurrencyCell class];
                     break;
                 }
                     
