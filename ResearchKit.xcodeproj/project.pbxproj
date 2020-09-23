@@ -250,7 +250,7 @@
 		86C40CEC1A8D7C5C00081FAC /* ORKAnswerTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40B681A8D7C5B00081FAC /* ORKAnswerTextField.m */; };
 		86C40CEE1A8D7C5C00081FAC /* ORKAnswerTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40B691A8D7C5B00081FAC /* ORKAnswerTextView.h */; };
 		86C40CF01A8D7C5C00081FAC /* ORKAnswerTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40B6A1A8D7C5B00081FAC /* ORKAnswerTextView.m */; };
-		86C40CF21A8D7C5C00081FAC /* ORKBodyLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40B6B1A8D7C5B00081FAC /* ORKBodyLabel.h */; };
+		86C40CF21A8D7C5C00081FAC /* ORKBodyLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40B6B1A8D7C5B00081FAC /* ORKBodyLabel.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		86C40CF41A8D7C5C00081FAC /* ORKBodyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40B6C1A8D7C5B00081FAC /* ORKBodyLabel.m */; };
 		86C40CF61A8D7C5C00081FAC /* ORKBorderedButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 86C40B6D1A8D7C5B00081FAC /* ORKBorderedButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86C40CF81A8D7C5C00081FAC /* ORKBorderedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C40B6E1A8D7C5C00081FAC /* ORKBorderedButton.m */; };
@@ -443,7 +443,7 @@
 		BA473FED224DBA3700A362E3 /* ORKLearnMoreView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA473FEB224DBA3700A362E3 /* ORKLearnMoreView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BA473FEE224DBA3700A362E3 /* ORKLearnMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA473FEC224DBA3700A362E3 /* ORKLearnMoreView.m */; };
 		BA6E1EB6209E9A3F00DA9D55 /* ORKPDFViewerStepView_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BA6E1EB5209E9A3F00DA9D55 /* ORKPDFViewerStepView_Internal.h */; };
-		BA8078E3224A8D6E0013B554 /* ORKTitleLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8078E1224A8D6E0013B554 /* ORKTitleLabel.h */; };
+		BA8078E3224A8D6E0013B554 /* ORKTitleLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8078E1224A8D6E0013B554 /* ORKTitleLabel.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BA8078E4224A8D6E0013B554 /* ORKTitleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8078E2224A8D6E0013B554 /* ORKTitleLabel.m */; };
 		BA8078F3224AC8AA0013B554 /* ORKStepContainerView.h in Headers */ = {isa = PBXBuildFile; fileRef = BA8078F1224AC8AA0013B554 /* ORKStepContainerView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BA8078F4224AC8AA0013B554 /* ORKStepContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA8078F2224AC8AA0013B554 /* ORKStepContainerView.m */; };

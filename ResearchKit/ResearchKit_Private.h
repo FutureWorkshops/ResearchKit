@@ -106,6 +106,8 @@
 #import <ResearchKit/ORKInstructionStepContainerView.h>
 
 #import <ResearchKit/ORKLabel.h>
+#import <ResearchKit/ORKTitleLabel.h>
+#import <ResearchKit/ORKBodyLabel.h>
 #import <ResearchKit/ORKUnitLabel.h>
 #import <ResearchKit/ORKHeadlineLabel.h>
 #import <ResearchKit/ORKSubheadlineLabel.h>
