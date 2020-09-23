@@ -30,13 +30,15 @@
 
 
 @import UIKit;
-#import "ORKLabel.h"
+#import <ResearchKit/ORKLabel.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
 
 ORK_CLASS_AVAILABLE
 @interface ORKTitleLabel : ORKLabel
+
++ (UIFont *)defaultFont;
 
 @end
 

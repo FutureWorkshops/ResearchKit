@@ -602,4 +602,18 @@ static NSString *const _ORKAddedResultsKey = @"addedResults";
     return YES;
 }
 
+#pragma mark - MW additions
+
+- (void)disableButtonItemNavigation {
+    self.cancelButtonItem = nil;
+    if (![self hasNextStep]) {
+        self.continueButtonItem = nil;
+    }
+}
+
+- (void)hideNavigationFooterView {
+    _navigationFooterView.neverHasContinueButton = YES;
+    [_navigationFooterView flattenIfNeeded];
+}
+
 @end

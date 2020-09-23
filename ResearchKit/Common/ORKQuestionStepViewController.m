@@ -859,6 +859,7 @@ static const CGFloat DelayBeforeAutoScroll = 0.25;
         case ORKQuestionTypeDecimal:{
             height = [ORKSurveyAnswerCellForNumber suggestedCellHeightForView:tableView];
         }
+            break;
         case ORKQuestionTypeCurrency:{
             height = [ORKSurveyAnswerCellForCurrency suggestedCellHeightForView:tableView];
         }

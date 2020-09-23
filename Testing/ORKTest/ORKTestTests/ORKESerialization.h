@@ -35,6 +35,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+FOUNDATION_EXPORT NSErrorDomain const ORKESerializationErrorDomain;
+
+typedef NS_ENUM(NSUInteger, ORKESerializationErrorCode) {
+    ORKESerializationErrorCodeUnexpectedClass = 1001
+};
+
 @interface ORKESerializationLocalizer : NSObject
 
 - (instancetype)initWithBundle:(NSBundle *)bundle tableName:(NSString *)tableName;
@@ -126,7 +132,7 @@ typedef _Nullable id (^ORKESerializationJSONToObjectBlock)(id jsonObject, ORKESe
 
 + (nullable id)objectFromJSONObject:(NSDictionary *)object context:(ORKESerializationContext *)context error:(NSError **)error;
 
-+ (NSDictionary *)JSONObjectForObject:(id)object context:(ORKESerializationContext *)context error:(__unused NSError **)error;
++ (nullable NSDictionary *)JSONObjectForObject:(id)object context:(ORKESerializationContext *)context error:(__unused NSError **)error;
 
 + (nullable id)objectFromJSONData:(NSData *)data error:(NSError **)error;
 
