@@ -123,10 +123,13 @@
         UIImage *thumbnailImage = [UIImage imageWithCGImage:thumbnailImageRef];
         CGImageRelease(thumbnailImageRef);
         
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [strongSelf videoInstructionStep].image = thumbnailImage;
-            [strongSelf stepDidChange];
-        });
+        // check for image otherwise we get into a loop
+        if (thumbnailImage != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [strongSelf videoInstructionStep].image = thumbnailImage;
+                [strongSelf stepDidChange];
+            });
+        }
     });
 }
 
