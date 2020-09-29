@@ -85,6 +85,7 @@ static const CGFloat DontKnowButtonTopBottomPadding = 16.0;
 
 - (void)numberCell_initialize {
     ORKQuestionType questionType = self.step.questionType;
+    _numberFormatter = ORKDecimalNumberFormatter();
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localeDidChange:) name:NSCurrentLocaleDidChangeNotification object:nil];
    
     _dontKnowButtonActive = NO;
