@@ -66,9 +66,9 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 }
 
 - (void)initializeInternalButtonItems {
-    NSString *nextButtonTitle = [self localizedStringForString:ORKLocalizedString(@"BUTTON_NEXT", nil)];
-    NSString *doneButtonTitle = [self localizedStringForString:ORKLocalizedString(@"BUTTON_DONE", nil)];
-    NSString *skipButtonTitle = [self localizedStringForString:ORKLocalizedString(@"BUTTON_SKIP", nil)];
+    NSString *nextButtonTitle = [self localizedStringForKey:@"BUTTON_NEXT"];
+    NSString *doneButtonTitle = [self localizedStringForKey:@"BUTTON_DONE"];
+    NSString *skipButtonTitle = [self localizedStringForKey:@"BUTTON_SKIP"];
 
     _internalContinueButtonItem = [[UIBarButtonItem alloc] initWithTitle: nextButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(goForward)];
     _internalDoneButtonItem = [[UIBarButtonItem alloc] initWithTitle: doneButtonTitle style:UIBarButtonItemStyleDone target:self action:@selector(goForward)];
@@ -370,7 +370,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 }
 
 - (void)setBackButtonItem:(UIBarButtonItem *)backButton {
-    NSString *axButtonBackTitle = [self localizedStringForString:ORKLocalizedString(@"AX_BUTTON_BACK", nil)];
+    NSString *axButtonBackTitle = [self localizedStringForKey:@"AX_BUTTON_BACK"];
     backButton.accessibilityLabel = axButtonBackTitle;
 
     _backButtonItem = backButton;
@@ -425,18 +425,22 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
     }
 }
 
-- (NSString *)localizedStringForString:(NSString *)string
+- (NSString *)localizedStringForKey:(NSString *)key
 {
+    NSString *currentBundleTranslation = ORKLocalizedString(key, nil);
+
     if (self.step.translations == nil) {
-        return string;
+        return currentBundleTranslation;
     }
 
-    NSString *translation = [self.step.translations objectForKey:string];
+    NSString *baseBundleTranslation = ORKDefaultLocalizedValue(key);
+
+    NSString *translation = [self.step.translations objectForKey:baseBundleTranslation];
 
     if (translation != nil) {
         return translation;
     } else {
-        return string;
+        return currentBundleTranslation;
     }
 }
 
@@ -496,7 +500,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
                                                                        message:nil
                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
 
-        NSString *clearAnswerButtonTitle = [self localizedStringForString:ORKLocalizedString(@"BUTTON_CLEAR_ANSWER", nil)];
+        NSString *clearAnswerButtonTitle = [self localizedStringForKey:@"BUTTON_CLEAR_ANSWER"];
         [alert addAction:[UIAlertAction actionWithTitle:clearAnswerButtonTitle
 
                                                   style:UIAlertActionStyleDestructive
@@ -506,7 +510,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
             });
         }]];
 
-        NSString *cancelButtonTitle = [self localizedStringForString:ORKLocalizedString(@"BUTTON_CANCEL", nil)];
+        NSString *cancelButtonTitle = [self localizedStringForKey:@"BUTTON_CANCEL"];
         [alert addAction:[UIAlertAction actionWithTitle:cancelButtonTitle
                                                   style:UIAlertActionStyleCancel
                                                 handler:nil
@@ -538,7 +542,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
 }
 
 - (BOOL)showValidityAlertWithMessage:(NSString *)text {
-    NSString *rangeAlertTitle = [self localizedStringForString:ORKLocalizedString(@"RANGE_ALERT_TITLE", nil)];
+    NSString *rangeAlertTitle = [self localizedStringForKey:@"RANGE_ALERT_TITLE"];
     return [self showValidityAlertWithTitle:rangeAlertTitle message:text];
 }
 
@@ -560,7 +564,7 @@ static const CGFloat iPadStepTitleLabelFontSize = 50.0;
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    NSString *cancelButtonTitle = [self localizedStringForString:ORKLocalizedString(@"BUTTON_CANCEL", nil)];
+    NSString *cancelButtonTitle = [self localizedStringForKey:@"BUTTON_CANCEL"];
     [alert addAction:[UIAlertAction actionWithTitle:cancelButtonTitle
                                               style:UIAlertActionStyleDefault
                                             handler:nil]];

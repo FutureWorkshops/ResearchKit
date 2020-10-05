@@ -412,12 +412,9 @@ ORK_CLASS_AVAILABLE
 /**
     Returns a translation of a string based on translations property.
 
-    @param string   String to translate
-
-    @return A newly initialized step view controller.
-
+    @param key   Key of the string to translate
 */
-- (NSString *)localizedStringForString:(NSString *)string;
+- (NSString *)localizedStringForKey:(NSString *)key;
 
 @end
 
