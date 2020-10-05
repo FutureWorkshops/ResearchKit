@@ -66,6 +66,7 @@
 @implementation ORKVideoInstructionStepViewController {
     Float64 _playbackStoppedTime;
     BOOL _playbackCompleted;
+    UIImage *_placeholder;
 }
 
 - (ORKVideoInstructionStep *)videoInstructionStep {
@@ -110,7 +111,7 @@
         return;
     }
     
-    [self videoInstructionStep].image = [UIImage imageNamed:@"placeholder"];
+    [self videoInstructionStep].image = [self placeholderImage];
 
     ORKWeakTypeOf(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -123,11 +124,37 @@
         UIImage *thumbnailImage = [UIImage imageWithCGImage:thumbnailImageRef];
         CGImageRelease(thumbnailImageRef);
         
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [strongSelf videoInstructionStep].image = thumbnailImage;
-            [strongSelf stepDidChange];
-        });
+        // check for image otherwise we get into a loop
+        if (thumbnailImage != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                _placeholder = nil;
+                [strongSelf videoInstructionStep].image = thumbnailImage;
+                [strongSelf stepDidChange];
+            });
+        }
     });
+}
+
+- (UIImage *)placeholderImage {
+    if (_placeholder != nil) {
+        return _placeholder;
+    }
+    CGSize size = CGSizeMake(100.0f, 100.0f);
+    UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:size];
+    _placeholder = [renderer imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
+        [[UIColor systemBackgroundColor] setFill];
+        [rendererContext fillRect:CGRectMake(0.0f, 0.0f, size.width, size.height)];
+    }];
+    return _placeholder;
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    if (_placeholder != nil) {
+        _placeholder = nil;
+        self.videoInstructionStep.image = nil;
+        [self stepDidChange];
+    }
 }
 
 - (void)play {
