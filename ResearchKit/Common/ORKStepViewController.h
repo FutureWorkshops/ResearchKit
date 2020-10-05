@@ -409,6 +409,13 @@ ORK_CLASS_AVAILABLE
  */
 @property (nonatomic, readonly) BOOL hasBeenPresented;
 
+/**
+    Returns a translation of a string based on translations property.
+
+    @param key   Key of the string to translate
+*/
+- (NSString *)localizedStringForKey:(NSString *)key;
+
 @end
 
 NS_ASSUME_NONNULL_END
