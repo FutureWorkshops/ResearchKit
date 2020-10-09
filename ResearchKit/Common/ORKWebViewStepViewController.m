@@ -398,7 +398,7 @@ static const CGFloat ORKSignatureTopPadding = 37.0;
 // MARK: WKWebViewDelegate
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = true;
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = true;
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
@@ -422,7 +422,7 @@ static const CGFloat ORKSignatureTopPadding = 37.0;
         }
     }];
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = false;
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = false;
 }
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {

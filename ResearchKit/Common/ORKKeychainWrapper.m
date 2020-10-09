@@ -50,7 +50,7 @@ static NSString *ORKKeychainWrapperDefaultService() {
 + (BOOL)setObject:(id<NSSecureCoding>)object
            forKey:(NSString *)key
             error:(NSError **)errorOut {
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object requiringSecureCoding:YES error:errorOut];
     return [self setData:data
                   forKey:key
                  service:ORKKeychainWrapperDefaultService()
@@ -58,13 +58,13 @@ static NSString *ORKKeychainWrapperDefaultService() {
                    error:errorOut];
 }
 
-+ (id<NSSecureCoding>)objectForKey:(NSString *)key
++ (NSDictionary *)dictionaryForKey:(NSString *)key
              error:(NSError **)errorOut {
     NSData *data = [self dataForKey:key
                             service:ORKKeychainWrapperDefaultService()
                         accessGroup:nil
                               error:errorOut];
-    return data ? [NSKeyedUnarchiver unarchiveObjectWithData:data] : nil;
+    return data ? [NSKeyedUnarchiver unarchivedObjectOfClass:[NSDictionary class] fromData:data error:errorOut] : nil;
 }
 
 + (BOOL)removeObjectForKey:(NSString *)key
