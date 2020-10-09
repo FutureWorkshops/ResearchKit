@@ -294,7 +294,8 @@ static const CGFloat activityIndicatorPadding = 24.0;
 
     if (showActivityIndicator == YES) {
         if (_activityIndicatorView == nil) {
-            _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
+            _activityIndicatorView.tintColor = [UIColor whiteColor];
             [_activityIndicatorView startAnimating];
             
             [_continueButton addSubview:_activityIndicatorView];
