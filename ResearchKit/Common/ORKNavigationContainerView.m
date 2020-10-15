@@ -77,6 +77,7 @@ static const CGFloat activityIndicatorPadding = 24.0;
 - (void)flattenIfNeeded {
     if (![self hasContinueOrSkip] || (self.continueButtonItem == nil && [self neverHasSkipButton] && [self neverHasFootnote])) {
         [[self.heightAnchor constraintEqualToConstant:0] setActive:YES];
+        self.hidden = YES; // can still see squashed button otherwise
     }
 }
 
